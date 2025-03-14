@@ -501,6 +501,26 @@ MonoBehaviour:
   company: Unity
   priority: 0
   required: 0
+--- !u!114 &-3101710660760696912
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0e6d101c6c16834aa7d852f71cacf2d, type: 3}
+  m_Name: HTCViveTrackerProfile Metro
+  m_EditorClassIdentifier: 
+  m_enabled: 0
+  nameUi: HTC Vive Tracker Profile
+  version: 0.0.1
+  featureIdInternal: com.massive.openxr.feature.input.htcvivetracker
+  openxrExtensionStrings: XR_HTCX_vive_tracker_interaction
+  company: MASSIVE
+  priority: 0
+  required: 0
 --- !u!114 &-2810256235314258114
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -519,6 +539,26 @@ MonoBehaviour:
   featureIdInternal: com.unity.openxr.feature.input.handinteraction
   openxrExtensionStrings: XR_EXT_hand_interaction
   company: Unity
+  priority: 0
+  required: 0
+--- !u!114 &-2709600376184277656
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0e6d101c6c16834aa7d852f71cacf2d, type: 3}
+  m_Name: HTCViveTrackerProfile Standalone
+  m_EditorClassIdentifier: 
+  m_enabled: 1
+  nameUi: HTC Vive Tracker Profile
+  version: 0.0.1
+  featureIdInternal: com.massive.openxr.feature.input.htcvivetracker
+  openxrExtensionStrings: XR_HTCX_vive_tracker_interaction
+  company: MASSIVE
   priority: 0
   required: 0
 --- !u!114 &-2309520122868139557
@@ -682,6 +722,7 @@ MonoBehaviour:
   - {fileID: -2810256235314258114}
   - {fileID: -4866635466020844158}
   - {fileID: -2223536320244615063}
+  - {fileID: -3101710660760696912}
   - {fileID: -7845642782820364056}
   - {fileID: -871222119395566462}
   - {fileID: 8064151244883166386}
@@ -926,7 +967,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: feeef8d85de8db242bdda70cc7ff5acd, type: 3}
   m_Name: OculusTouchControllerProfile Standalone
   m_EditorClassIdentifier: 
-  m_enabled: 1
+  m_enabled: 0
   nameUi: Oculus Touch Controller Profile
   version: 0.0.1
   featureIdInternal: com.unity.openxr.feature.input.oculustouch
@@ -1070,6 +1111,7 @@ MonoBehaviour:
   - {fileID: -6285089150649021800}
   - {fileID: 8388371677723521246}
   - {fileID: -209354416408132649}
+  - {fileID: -2709600376184277656}
   - {fileID: -4534502761403762032}
   - {fileID: 8445588240711069905}
   - {fileID: -1213381832983878554}
