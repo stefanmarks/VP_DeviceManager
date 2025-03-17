@@ -142,7 +142,7 @@ namespace UnityEngine.XR.OpenXR.Features.Interactions
 		/// An Input System device based off the <a href="https://www.khronos.org/registry/OpenXR/specs/1.0/html/xrspec.html#_htc_vive_controller_profile">HTC Vive Tracker Haptic</a>.
 		/// </summary>
 		[Preserve, InputControlLayout(displayName = "HTC Vive Tracker (OpenXR)", commonUsages = new[] { "Left Foot", "Right Foot", "Left Shoulder", "Right Shoulder", "Left Elbow", "Right Elbow", "Left Knee", "Right Knee", "Waist", "Chest", "Camera", "Keyboard" })]
-		public class XRViveTracker : XRTracker
+		public class XRViveTracker : XRControllerWithRumble
 		{
 			/// <summary>
 			/// A <see cref="PoseControl"/> that represents information from the <see cref="HTCViveTrackerProfile.grip"/> OpenXR binding.
@@ -223,7 +223,7 @@ namespace UnityEngine.XR.OpenXR.Features.Interactions
 		/// </summary>
 		protected override void RegisterDeviceLayout()
 		{
-			InputSystem.InputSystem.RegisterLayout<XRTracker>();
+			//InputSystem.InputSystem.RegisterLayout<XRTracker>();
 
 			InputSystem.InputSystem.RegisterLayout(typeof(XRViveTracker),
 						matches: new InputDeviceMatcher()
@@ -237,7 +237,7 @@ namespace UnityEngine.XR.OpenXR.Features.Interactions
 		protected override void UnregisterDeviceLayout()
 		{
 			InputSystem.InputSystem.RemoveLayout(nameof(XRViveTracker));
-			InputSystem.InputSystem.RemoveLayout(nameof(XRTracker));
+			//InputSystem.InputSystem.RemoveLayout(nameof(XRTracker));
 		}
 
 		//
