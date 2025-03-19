@@ -514,7 +514,7 @@ MonoBehaviour:
   m_Name: HTCViveTrackerProfile Metro
   m_EditorClassIdentifier: 
   m_enabled: 0
-  nameUi: HTC Vive Tracker Profile
+  nameUi: HTC Vive Tracker OpenXR Profile
   version: 0.0.1
   featureIdInternal: com.massive.openxr.feature.input.htcvivetracker
   openxrExtensionStrings: XR_HTCX_vive_tracker_interaction
@@ -554,7 +554,7 @@ MonoBehaviour:
   m_Name: HTCViveTrackerProfile Standalone
   m_EditorClassIdentifier: 
   m_enabled: 1
-  nameUi: HTC Vive Tracker Profile
+  nameUi: HTC Vive Tracker OpenXR Profile
   version: 0.0.1
   featureIdInternal: com.massive.openxr.feature.input.htcvivetracker
   openxrExtensionStrings: XR_HTCX_vive_tracker_interaction
