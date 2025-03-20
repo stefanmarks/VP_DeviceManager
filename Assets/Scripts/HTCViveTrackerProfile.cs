@@ -7,13 +7,15 @@ using UnityEngine.InputSystem.XR;
 using UnityEngine.Scripting;
 using UnityEngine.XR.OpenXR.Input;
 
-
-
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
-
+ 
+#if USE_INPUT_SYSTEM_POSE_CONTROL // Scripting Define Symbol added by using OpenXR Plugin 1.6.0.
 using PoseControl = UnityEngine.InputSystem.XR.PoseControl;
+#else
+using PoseControl = UnityEngine.XR.OpenXR.Input.PoseControl;
+#endif
 
 /// OpenXR HTC vive tracker interaction specification
 ///     <see href="https://registry.khronos.org/OpenXR/specs/1.0/html/xrspec.html#XR_HTCX_vive_tracker_interaction"/>
@@ -25,130 +27,149 @@ using PoseControl = UnityEngine.InputSystem.XR.PoseControl;
 namespace UnityEngine.XR.OpenXR.Features.Interactions
 {
 	/// <summary>
-	/// This <see cref="OpenXRInteractionFeature"/> enables the use of the HTC Vive Tracker interaction profiles in OpenXR
+	/// This <see cref="OpenXRInteractionFeature"/> enables the use of HTC Vive Trackers interaction profiles in OpenXR.
 	/// </summary>
 #if UNITY_EDITOR
 	[UnityEditor.XR.OpenXR.Features.OpenXRFeature(
-		UiName = "HTC Vive Tracker OpenXR Profile",
+		UiName = "HTC Vive Tracker Profile",
 		BuildTargetGroups = new[] { BuildTargetGroup.Standalone, BuildTargetGroup.WSA },
 		Company = "MASSIVE",
-		Desc = "Support for enabling the Vive XR Tracker interaction profile. Registers the controller map for tracker if enabled.",
+		Desc = "Allows for mapping input to the HTC Vive Tracker interaction profile.",
 		DocumentationLink = Constants.k_DocumentationManualURL,
-		OpenxrExtensionStrings = extensionName,
+		OpenxrExtensionStrings = HTCViveTrackerProfile.extensionName,
+		Version = "0.0.1",
 		Category = UnityEditor.XR.OpenXR.Features.FeatureCategory.Interaction,
-		FeatureId = featureId,
-		Version = "0.0.1")]
+		FeatureId = featureId)]
 #endif
 
-
-	public class ViveTrackerOpenXRProfile : OpenXRInteractionFeature
+	public class HTCViveTrackerProfile : OpenXRInteractionFeature
 	{
 		/// <summary>
-		/// OpenXR specification that supports the vive tracker
-		/// <see href="https://registry.khronos.org/OpenXR/specs/1.0/html/xrspec.html#XR_HTCX_vive_tracker_interaction"/>
+		/// The name of the OpenXR extension that supports the Vive Tracker
 		/// </summary>
 		public const string extensionName = "XR_HTCX_vive_tracker_interaction";
-
+		
 		/// <summary>
 		/// The feature id string. This is used to give the feature a well known id for reference
 		/// </summary>
 		public const string featureId = "com.massive.openxr.feature.input.htcvivetracker";
-
+ 
 		/// <summary>
-		/// The interaction profile string used to reference the <a href="https://www.khronos.org/registry/OpenXR/specs/1.0/html/xrspec.html#:~:text=in%20this%20case.-,VIVE%20Tracker%20interaction%20profile,-Interaction%20profile%20path">HTC Vive Tracker Haptic</a>.
+		/// The interaction profile string used to reference the <a href="https://www.khronos.org/registry/OpenXR/specs/1.0/html/xrspec.html#:~:text=in%20this%20case.-,VIVE%20Tracker%20interaction%20profile,-Interaction%20profile%20path">HTC Vive Tracker</a>.
 		/// </summary>
 		public const string profile = "/interaction_profiles/htc/vive_tracker_htcx";
-
+ 
 		/// <summary>
 		/// Localized name of the profile.
 		/// </summary>
 		private const string kDeviceLocalizedName = "HTC Vive Tracker OpenXR";
 
 		/// <summary>
-		/// OpenXR user path definitions for XR_HTCX_vive_tracker_interaction
+		/// Localized name of the layout.
 		/// </summary>
-		public struct TrackerUserPaths
-		{
-			// if you add the below missing paths, also add the path name to commonUsages of XRViveTracker
-			// as of the creation of this script, left_wrist, right_wrist, left_ankle, and right_ankle are not supported by SteamVR
-
-			// missing XR_NULL_PATH
-			// missing handheld_object
-			public const string leftFoot = "/user/vive_tracker_htcx/role/left_foot";
-			public const string rightFoot = "/user/vive_tracker_htcx/role/right_foot";
-			public const string leftShoulder = "/user/vive_tracker_htcx/role/left_shoulder";
-			public const string rightShoulder = "/user/vive_tracker_htcx/role/right_shoulder";
-			public const string leftElbow = "/user/vive_tracker_htcx/role/left_elbow";
-			public const string rightElbow = "/user/vive_tracker_htcx/role/right_elbow";
-			public const string leftKnee = "/user/vive_tracker_htcx/role/left_knee";
-			public const string rightKnee = "/user/vive_tracker_htcx/role/right_knee";
-			// missing left_wrist
-			// missing right_wrist
-			// missing left_ankle
-			// missing right_ankle
-			public const string waist = "/user/vive_tracker_htcx/role/waist";
-			public const string chest = "/user/vive_tracker_htcx/role/chest";
-			public const string camera = "/user/vive_tracker_htcx/role/camera";
-			public const string keyboard = "/user/vive_tracker_htcx/role/keyboard";
-		}
+		private const string kLayoutName = "ViveTracker";
 
 		/// <summary>
-		/// OpenXR component path definitions for XR_HTCX_vive_tracker_interaction.
-		/// Component paths are used by input subsystem to bind physical inputs to actions.
+		/// OpenXR user path definitions for XR_HTCX_vive_tracker_interaction
 		/// </summary>
-		public struct TrackerComponentPaths
+		public static class HTCViveTrackerUserPaths
+		{
+			/// <summary>
+			/// Path for user left foot
+			/// </summary>
+			public const string leftFoot = "/user/vive_tracker_htcx/role/left_foot";
+ 
+			/// <summary>
+			/// Path for user roght foot
+			/// </summary>
+			public const string rightFoot = "/user/vive_tracker_htcx/role/right_foot";
+ 
+			/// <summary>
+			/// Path for user left shoulder
+			/// </summary>
+			public const string leftShoulder = "/user/vive_tracker_htcx/role/left_shoulder";
+ 
+			/// <summary>
+			/// Path for user right shoulder
+			/// </summary>
+			public const string rightShoulder = "/user/vive_tracker_htcx/role/right_shoulder";
+ 
+			/// <summary>
+			/// Path for user left elbow
+			/// </summary>
+			public const string leftElbow = "/user/vive_tracker_htcx/role/left_elbow";
+ 
+			/// <summary>
+			/// Path for user right elbow
+			/// </summary>
+			public const string rightElbow = "/user/vive_tracker_htcx/role/right_elbow";
+ 
+			/// <summary>
+			/// Path for user left knee
+			/// </summary>
+			public const string leftKnee = "/user/vive_tracker_htcx/role/left_knee";
+ 
+			/// <summary>
+			/// Path for user right knee
+			/// </summary>
+			public const string rightKnee = "/user/vive_tracker_htcx/role/right_knee";
+ 
+			/// <summary>
+			/// Path for user waist
+			/// </summary>
+			public const string waist = "/user/vive_tracker_htcx/role/waist";
+ 
+			/// <summary>
+			/// Path for user chest
+			/// </summary>
+			public const string chest = "/user/vive_tracker_htcx/role/chest";
+ 
+			/// <summary>
+			/// Path for user custom camera
+			/// </summary>
+			public const string camera = "/user/vive_tracker_htcx/role/camera";
+ 
+			/// <summary>
+			/// Path for user keyboard
+			/// </summary>
+			public const string keyboard = "/user/vive_tracker_htcx/role/keyboard";
+		}
+ 
+		/// <summary>
+		/// OpenXR component path definitions for the tracker.
+		/// </summary>
+		public static class HTCViveTrackerComponentPaths
 		{
 			// type PoseControl
 			public const string devicepose = "/input/grip/pose";
 
 			// type ButtonControl
-			public const string system = "/input/system/click"; // may not be available for application use
-			public const string menu = "/input/menu/click";
-			public const string grip = "/input/squeeze/click";
-			public const string trigger = "/input/trigger/click";
-			public const string pad = "/input/trackpad/click";
-/*
+			public const string system   = "/input/system/click"; // may not be available for application use
+			public const string menu     = "/input/menu/click";
+			public const string grip     = "/input/squeeze/click";
+			public const string trigger  = "/input/trigger/click";
+			public const string pad      = "/input/trackpad/click";
 			public const string padTouch = "/input/trackpad/touch";
 
 			// type AxisControl
 			public const string triggerValue = "/input/trigger/value";
-			public const string padXValue = "/input/trackpad/x";
-			public const string padYValue = "/input/trackpad/y";
-*/
+			public const string padXValue    = "/input/trackpad/x";
+			public const string padYValue    = "/input/trackpad/y";
+
 			//type HapticControl
 			public const string haptic = "/output/haptic";
 		}
-
-		/// <summary>
-		/// A set of bit flags describing XR.InputDevice characteristics
-		/// </summary>
-		[Flags]
-		public enum InputDeviceTrackerCharacteristics : uint
-		{
-			TrackerLeftFoot = 0x1000u,
-			TrackerRightFoot = 0x2000u,
-			TrackerLeftShoulder = 0x4000u,
-			TrackerRightShoulder = 0x8000u,
-			TrackerLeftElbow = 0x10000u,
-			TrackerRightElbow = 0x20000u,
-			TrackerLeftKnee = 0x40000u,
-			TrackerRightKnee = 0x80000u,
-			TrackerWaist = 0x100000u,
-			TrackerChest = 0x200000u,
-			TrackerCamera = 0x400000u,
-			TrackerKeyboard = 0x800000u
-		}
-
+ 
 		/// <summary>
 		/// An Input System device based off the <a href="https://registry.khronos.org/OpenXR/specs/1.0/html/xrspec.html#XR_HTCX_vive_tracker_interaction">HTC Vive Tracker OpenXR specifications
 		/// </summary>
 		[Preserve, InputControlLayout(displayName = "HTC Vive Tracker (OpenXR)", commonUsages = new[] { "Left Foot", "Right Foot", "Left Shoulder", "Right Shoulder", "Left Elbow", "Right Elbow", "Left Knee", "Right Knee", "Waist", "Chest", "Camera", "Keyboard" }, isGenericTypeOfDevice = true)]
-		public class ViveTrackerOpenXR : XRControllerWithRumble
+		public class HTCViveTrackerOpenXR : XRControllerWithRumble
 		{
 			#region Pose
 			/// <summary>
 			/// device pose. Contains isTracked, trackingState, position, rotation, velocity, and angularVelocity 
-			/// <see cref="TrackerComponentPaths.devicepose"/>
+			/// <see cref="HTCViveTrackerComponentPaths.devicepose"/>
 			/// </summary>
 			[Preserve, InputControl(offset = 0, aliases = new[] { "device", "entityPose" }, usage = "Device", noisy = true)]
 			public PoseControl devicePose { get; private set; }
@@ -157,63 +178,61 @@ namespace UnityEngine.XR.OpenXR.Features.Interactions
 			/// if data is valid, equivalent to devicePose/isTracked
 			/// necessary for compatibility with XRSDK layouts
 			/// </summary>
-			[Preserve, InputControl(offset = 0, usage = "IsTracked")]
+			[Preserve, InputControl(offset = 60, usage = "IsTracked")]
 			new public ButtonControl isTracked { get; private set; }
 
 			/// <summary>
 			/// represents what data is valid, equivalent to devicePose/trackingState
 			/// necessary for compatibility with XRSDK layouts
 			/// </summary>
-			[Preserve, InputControl(offset = 4, usage = "TrackingState")]
+			[Preserve, InputControl(offset = 64, usage = "TrackingState")]
 			new public IntegerControl trackingState { get; private set; }
 
 			/// <summary>
-			/// position of device, equivalent to devicePose/position
-			/// necessary for compatibility with XRSDK layouts
+			/// A [Vector3Control](xref:UnityEngine.InputSystem.Controls.Vector3Control) required for back compatibility with the XRSDK layouts. This is the device position. For the Oculus Touch device, this is both the grip and the pointer position. This value is equivalent to mapping devicePose/position.
 			/// </summary>
-			[Preserve, InputControl(offset = 8, alias = "gripPosition")]
+			[Preserve, InputControl(offset = 8, alias = "gripPosition", noisy = true)]
 			new public Vector3Control devicePosition { get; private set; }
 
 			/// <summary>
-			/// rotation/orientation of device, equivalent to devicePose/rotation
-			/// necessary for compatibility with XRSDK layouts
+			/// A [QuaternionControl](xref:UnityEngine.InputSystem.Controls.QuaternionControl) required for backwards compatibility with the XRSDK layouts. This is the device orientation. For the Oculus Touch device, this is both the grip and the pointer rotation. This value is equivalent to mapping devicePose/rotation.
 			/// </summary>
-			[Preserve, InputControl(offset = 20, alias = "gripOrientation")]
+			[Preserve, InputControl(offset = 20, alias = "gripOrientation", noisy = true)]
 			new public QuaternionControl deviceRotation { get; private set; }
 			#endregion
 
 			#region Boolean Inputs
 			/// <summary>
 			/// System button on top of tracker. May not be available for application use
-			/// <see cref="TrackerComponentPaths.system"/>
+			/// <see cref="HTCViveTrackerComponentPaths.system"/>
 			/// </summary>
 			[Preserve, InputControl(alias = "systemButton", usage = "SystemButton")]
 			public ButtonControl system { get; private set; }
 
 			/// <summary>
 			/// Menu button. Accessed on vive tracker 3.0 via USB or by shorting pins 2 and 6
-			/// <see cref="TrackerComponentPaths.menu"/>
+			/// <see cref="HTCViveTrackerComponentPaths.menu"/>
 			/// </summary>
 			[Preserve, InputControl(alias = "menuButton", usage = "MenuButton")]
 			public ButtonControl menu { get; private set; }
 
 			/// <summary>
 			/// Grip button. Accessed on vive tracker 3.0 via USB or by shorting pins 2 and 3
-			/// <see cref="TrackerComponentPaths.grip"/>
+			/// <see cref="HTCViveTrackerComponentPaths.grip"/>
 			/// </summary>
 			[Preserve, InputControl(alias = "gripButton", usage = "GripButton")]
 			public ButtonControl grip { get; private set; }
 
 			/// <summary>
 			/// Trigger button. Accessed on vive tracker 3.0 via USB or by shorting pins 2 and 4
-			/// <see cref="TrackerComponentPaths.trigger"/>
+			/// <see cref="HTCViveTrackerComponentPaths.trigger"/>
 			/// </summary>
 			[Preserve, InputControl(alias = "triggerButton", usage = "TriggerButton")]
 			public ButtonControl trigger { get; private set; }
 
 			/// <summary>
 			/// Trackpad button. Accessed on vive tracker 3.0 via USB or by shorting pins 2 and 5
-			/// <see cref="TrackerComponentPaths.pad"/>
+			/// <see cref="HTCViveTrackerComponentPaths.pad"/>
 			/// </summary>
 			[Preserve, InputControl(alias = "trackpadButton", usage = "TrackpadButton")]
 			public ButtonControl pad { get; private set; }
@@ -237,44 +256,46 @@ namespace UnityEngine.XR.OpenXR.Features.Interactions
 
 			/// <summary>
 			/// Trackpad X/horizontal analog value. Only accessible on vive tracker 3.0 via USB
-			/// <see cref="TrackerComponentPaths.padXValue"/>
+			/// <see cref="HTCViveTrackerComponentPaths.padXValue"/>
 			/// </summary>
 			[Preserve, InputControl(alias = "trackpadXValue", usage = "TrackpadXValue")]
 			public AxisControl padXValue { get; private set; }
 
 			/// <summary>
 			/// Trackpad Y/vertical analog value. Only accessible on vive tracker 3.0 via USB
-			/// <see cref="TrackerComponentPaths.padYValue"/>
+			/// <see cref="HTCViveTrackerComponentPaths.padYValue"/>
 			/// </summary>
 			[Preserve, InputControl(alias = "trackpadYValue", usage = "TrackpadYValue")]
 			public AxisControl padYValue { get; private set; }
 			#endregion
 
-			#region device Outputs
+			#region Device Outputs
 			/// <summary>
 			/// Haptic outputs. Accessed on vive tracker 3.0 by pogo pin 1. Untested via USB
-			/// <see cref="TrackerComponentPaths.haptic"/>
+			/// <see cref="HTCViveTrackerComponentPaths.haptic"/>
 			/// </summary>
 			[Preserve, InputControl(usage = "Haptic")]
 			public HapticControl haptic { get; private set; }
 			#endregion
 
 			/// <inheritdoc cref="OpenXRDevice"/>
-			protected override void FinishSetup() {
+			protected override void FinishSetup()
+			{
 				base.FinishSetup();
 
-				devicePose = GetChildControl<PoseControl>("devicePose");
-				isTracked = GetChildControl<ButtonControl>("isTracked");
-				trackingState = GetChildControl<IntegerControl>("trackingState");
+				devicePose     = GetChildControl<PoseControl>("devicePose");
+				isTracked      = GetChildControl<ButtonControl>("isTracked");
+				trackingState  = GetChildControl<IntegerControl>("trackingState");
 				devicePosition = GetChildControl<Vector3Control>("devicePosition");
 				deviceRotation = GetChildControl<QuaternionControl>("deviceRotation");
 
-				system = GetChildControl<ButtonControl>("system");
-				menu = GetChildControl<ButtonControl>("menu");
-				grip = GetChildControl<ButtonControl>("grip");
-				trigger = GetChildControl<ButtonControl>("trigger");
-				pad = GetChildControl<ButtonControl>("pad");
-/*				padTouch = GetChildControl<ButtonControl>("padTouch");
+				system   = GetChildControl<ButtonControl>("system");
+				menu     = GetChildControl<ButtonControl>("menu");
+				grip     = GetChildControl<ButtonControl>("grip");
+				trigger  = GetChildControl<ButtonControl>("trigger");
+				pad      = GetChildControl<ButtonControl>("pad");
+/*
+				padTouch = GetChildControl<ButtonControl>("padTouch");
 
 				triggerValue = GetChildControl<AxisControl>("triggerValue");
 				padXValue = GetChildControl<AxisControl>("padXValue");
@@ -309,18 +330,21 @@ namespace UnityEngine.XR.OpenXR.Features.Interactions
 				else if ((deviceDescriptor.characteristics & (InputDeviceCharacteristics)InputDeviceTrackerCharacteristics.TrackerKeyboard) != 0)
 					InputSystem.InputSystem.SetDeviceUsage(this, "Keyboard");
 				else {
-					Debug.Log("No tracker role could be found that matches this device");
+					Debug.Log($"No tracker role could be found that matches device '{base.displayName}'");
 				}
 
-				Debug.Log("Device added");
+				// Debug.Log($"Device '{base.displayName}' added");
 			}
 		}
 
 		/// <summary>
 		/// Registers the <see cref="ViveTracker"/> layout with the Input System.
 		/// </summary>
-		protected override void RegisterDeviceLayout() {
-			InputSystem.InputSystem.RegisterLayout(typeof(ViveTrackerOpenXR),
+		protected override void RegisterDeviceLayout()
+		{
+			//InputSystem.InputSystem.RegisterLayout<XRController>();
+			//InputSystem.InputSystem.RegisterLayout<XRControllerWithRumble>();
+			InputSystem.InputSystem.RegisterLayout(typeof(HTCViveTrackerOpenXR),
 						matches: new InputDeviceMatcher()
 						.WithInterface(XRUtilities.InterfaceMatchAnyVersion)
 						.WithProduct(kDeviceLocalizedName));
@@ -329,12 +353,55 @@ namespace UnityEngine.XR.OpenXR.Features.Interactions
 		/// <summary>
 		/// Removes the <see cref="ViveTracker"/> layout from the Input System.
 		/// </summary>
-		protected override void UnregisterDeviceLayout() {
-			InputSystem.InputSystem.RemoveLayout(nameof(ViveTrackerOpenXR));
+		protected override void UnregisterDeviceLayout()
+		{
+			InputSystem.InputSystem.RemoveLayout(nameof(HTCViveTrackerOpenXR));
+			//InputSystem.InputSystem.RemoveLayout(nameof(XRControllerWithRumble));
+			//InputSystem.InputSystem.RemoveLayout(nameof(XRController));
+		}
+
+
+		/// <summary>
+		/// Return interaction profile type. XRViveTracker profile is Device type. 	
+		/// </summary>
+		/// <returns>Interaction profile type.</returns> 	
+		protected override InteractionProfileType GetInteractionProfileType()	
+		{
+			return typeof(HTCViveTrackerOpenXR).IsSubclassOf(typeof(XRController)) ? InteractionProfileType.XRController : InteractionProfileType.Device;	
+		}
+
+		/// <summary>
+		/// Return device layer out string used for registering device VIVEFocus3Controller in InputSystem. 	
+		/// </summary>
+		/// <returns>Device layout string.</returns> 	
+		protected override string GetDeviceLayoutName()	
+		{	
+			return kLayoutName;	
+		}	
+
+		/// <summary>
+		/// A set of bit flags describing XR.InputDevice characteristics
+		/// </summary>
+		[Flags]
+		public enum InputDeviceTrackerCharacteristics : uint
+		{
+			TrackerLeftFoot      = 0x1000u,
+			TrackerRightFoot     = 0x2000u,
+			TrackerLeftShoulder  = 0x4000u,
+			TrackerRightShoulder = 0x8000u,
+			TrackerLeftElbow     = 0x10000u,
+			TrackerRightElbow    = 0x20000u,
+			TrackerLeftKnee      = 0x40000u,
+			TrackerRightKnee     = 0x80000u,
+			TrackerWaist         = 0x100000u,
+			TrackerChest         = 0x200000u,
+			TrackerCamera        = 0x400000u,
+			TrackerKeyboard      = 0x800000u
 		}
 
 		/// <inheritdoc/>
-		protected override void RegisterActionMapsWithRuntime() {
+		protected override void RegisterActionMapsWithRuntime()
+		{
 			ActionMapConfig actionMap = new ActionMapConfig()
 			{
 				name = "htcvivetracker",
@@ -347,68 +414,67 @@ namespace UnityEngine.XR.OpenXR.Features.Interactions
 					new DeviceConfig()
 					{
 						characteristics = (InputDeviceCharacteristics.TrackedDevice | InputDeviceCharacteristics.Controller | (InputDeviceCharacteristics)InputDeviceTrackerCharacteristics.TrackerLeftFoot),
-						userPath = TrackerUserPaths.leftFoot
+						userPath = HTCViveTrackerUserPaths.leftFoot
 					},
 					new DeviceConfig()
 					{
 						characteristics = (InputDeviceCharacteristics.TrackedDevice | InputDeviceCharacteristics.Controller | (InputDeviceCharacteristics)InputDeviceTrackerCharacteristics.TrackerRightFoot),
-						userPath = TrackerUserPaths.rightFoot
+						userPath = HTCViveTrackerUserPaths.rightFoot
 					},
 					new DeviceConfig()
 					{
 						characteristics = (InputDeviceCharacteristics.TrackedDevice | InputDeviceCharacteristics.Controller | (InputDeviceCharacteristics)InputDeviceTrackerCharacteristics.TrackerLeftShoulder),
-						userPath = TrackerUserPaths.leftShoulder
+						userPath = HTCViveTrackerUserPaths.leftShoulder
 					},
 					new DeviceConfig()
 					{
 						characteristics = (InputDeviceCharacteristics.TrackedDevice | InputDeviceCharacteristics.Controller | (InputDeviceCharacteristics)InputDeviceTrackerCharacteristics.TrackerRightShoulder),
-						userPath = TrackerUserPaths.rightShoulder
+						userPath = HTCViveTrackerUserPaths.rightShoulder
 					},
 					new DeviceConfig()
 					{
 						characteristics = (InputDeviceCharacteristics.TrackedDevice | InputDeviceCharacteristics.Controller | (InputDeviceCharacteristics)InputDeviceTrackerCharacteristics.TrackerLeftElbow),
-						userPath = TrackerUserPaths.leftElbow
+						userPath = HTCViveTrackerUserPaths.leftElbow
 					},
 					new DeviceConfig()
 					{
 						characteristics = (InputDeviceCharacteristics.TrackedDevice | InputDeviceCharacteristics.Controller | (InputDeviceCharacteristics)InputDeviceTrackerCharacteristics.TrackerRightElbow),
-						userPath = TrackerUserPaths.rightElbow
+						userPath = HTCViveTrackerUserPaths.rightElbow
 					},
 					new DeviceConfig()
 					{
 						characteristics = (InputDeviceCharacteristics.TrackedDevice | InputDeviceCharacteristics.Controller | (InputDeviceCharacteristics)InputDeviceTrackerCharacteristics.TrackerLeftKnee),
-						userPath = TrackerUserPaths.leftKnee
+						userPath = HTCViveTrackerUserPaths.leftKnee
 					},
 					new DeviceConfig()
 					{
 						characteristics = (InputDeviceCharacteristics.TrackedDevice | InputDeviceCharacteristics.Controller | (InputDeviceCharacteristics)InputDeviceTrackerCharacteristics.TrackerRightKnee),
-						userPath = TrackerUserPaths.rightKnee
+						userPath = HTCViveTrackerUserPaths.rightKnee
 					},
 					new DeviceConfig()
 					{
 						characteristics = (InputDeviceCharacteristics.TrackedDevice | InputDeviceCharacteristics.Controller | (InputDeviceCharacteristics)InputDeviceTrackerCharacteristics.TrackerWaist),
-						userPath = TrackerUserPaths.waist
+						userPath = HTCViveTrackerUserPaths.waist
 					},
 					new DeviceConfig()
 					{
 						characteristics = (InputDeviceCharacteristics.TrackedDevice | InputDeviceCharacteristics.Controller | (InputDeviceCharacteristics)InputDeviceTrackerCharacteristics.TrackerChest),
-						userPath = TrackerUserPaths.chest
+						userPath = HTCViveTrackerUserPaths.chest
 					},
 					new DeviceConfig()
 					{
 						characteristics = (InputDeviceCharacteristics.TrackedDevice | InputDeviceCharacteristics.Controller | (InputDeviceCharacteristics)InputDeviceTrackerCharacteristics.TrackerCamera),
-						userPath = TrackerUserPaths.camera
+						userPath = HTCViveTrackerUserPaths.camera
 					},
 					new DeviceConfig()
 					{
 						characteristics = (InputDeviceCharacteristics.TrackedDevice | InputDeviceCharacteristics.Controller | (InputDeviceCharacteristics)InputDeviceTrackerCharacteristics.TrackerKeyboard),
-						userPath = TrackerUserPaths.keyboard
+						userPath = HTCViveTrackerUserPaths.keyboard
 					}
 				},
 				actions = new List<ActionConfig>()
 				{
-					// Device Pose
-					new ActionConfig()
+					 new ActionConfig()
 					{
 						name = "devicePose",
 						localizedName = "Grip Pose",
@@ -418,7 +484,7 @@ namespace UnityEngine.XR.OpenXR.Features.Interactions
 						{
 							new ActionBinding()
 							{
-								interactionPath = TrackerComponentPaths.devicepose,
+								interactionPath = HTCViveTrackerComponentPaths.devicepose,
 								interactionProfileName = profile,
 							}
 						}
@@ -434,7 +500,7 @@ namespace UnityEngine.XR.OpenXR.Features.Interactions
 						{
 							new ActionBinding()
 							{
-								interactionPath = TrackerComponentPaths.system,
+								interactionPath = HTCViveTrackerComponentPaths.system,
 								interactionProfileName = profile,
 							}
 						}
@@ -450,7 +516,7 @@ namespace UnityEngine.XR.OpenXR.Features.Interactions
 						{
 							new ActionBinding()
 							{
-								interactionPath = TrackerComponentPaths.menu,
+								interactionPath = HTCViveTrackerComponentPaths.menu,
 								interactionProfileName = profile,
 							}
 						}
@@ -466,7 +532,7 @@ namespace UnityEngine.XR.OpenXR.Features.Interactions
 						{
 							new ActionBinding()
 							{
-								interactionPath = TrackerComponentPaths.grip,
+								interactionPath = HTCViveTrackerComponentPaths.grip,
 								interactionProfileName = profile,
 							}
 						}
@@ -482,7 +548,7 @@ namespace UnityEngine.XR.OpenXR.Features.Interactions
 						{
 							new ActionBinding()
 							{
-								interactionPath = TrackerComponentPaths.trigger,
+								interactionPath = HTCViveTrackerComponentPaths.trigger,
 								interactionProfileName = profile,
 							}
 						}
@@ -498,7 +564,7 @@ namespace UnityEngine.XR.OpenXR.Features.Interactions
 						{
 							new ActionBinding()
 							{
-								interactionPath = TrackerComponentPaths.pad,
+								interactionPath = HTCViveTrackerComponentPaths.pad,
 								interactionProfileName = profile,
 							}
 						}
@@ -580,26 +646,27 @@ namespace UnityEngine.XR.OpenXR.Features.Interactions
 						{
 							new ActionBinding()
 							{
-								interactionPath = TrackerComponentPaths.haptic,
+								interactionPath = HTCViveTrackerComponentPaths.haptic,
 								interactionProfileName = profile,
 							}
 						}
 					}
 				}
 			};
-
+ 
 			AddActionMap(actionMap);
 		}
-
-		protected override bool OnInstanceCreate(ulong xrInstance) {
+ 
+		protected override bool OnInstanceCreate(ulong xrInstance)
+		{
 			bool res = base.OnInstanceCreate(xrInstance);
 
-			string debug = kDeviceLocalizedName + " Extension ";
+			string name = kDeviceLocalizedName + " Extension ";
 			if (OpenXRRuntime.IsExtensionEnabled(extensionName)) {
-				Debug.Log(debug + "Enabled");
+				Debug.Log(name + "Enabled");
 			}
 			else {
-				Debug.LogWarning(debug + "Not Enabled");
+				Debug.LogWarning(name + "Not Enabled");
 			}
 
 			return res;
