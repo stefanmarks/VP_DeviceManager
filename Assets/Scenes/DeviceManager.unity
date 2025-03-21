@@ -219,13 +219,13 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 60200606}
   m_PrefabAsset: {fileID: 0}
---- !u!1001 &89796543
+--- !u!1001 &70061733
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 2055306990}
+    m_TransformParent: {fileID: 1096335403}
     m_Modifications:
     - target: {fileID: 2763425757151962889, guid: 07aa9395960b9924f98404c51fef0067,
         type: 3}
@@ -250,22 +250,22 @@ PrefabInstance:
     - target: {fileID: 3847063293131787598, guid: 07aa9395960b9924f98404c51fef0067,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.4627199
+      value: 0.21979904
       objectReference: {fileID: 0}
     - target: {fileID: 3847063293131787598, guid: 07aa9395960b9924f98404c51fef0067,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0.09241241
+      value: -0.06689434
       objectReference: {fileID: 0}
     - target: {fileID: 3847063293131787598, guid: 07aa9395960b9924f98404c51fef0067,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.8646004
+      value: -0.931083
       objectReference: {fileID: 0}
     - target: {fileID: 3847063293131787598, guid: 07aa9395960b9924f98404c51fef0067,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.17267425
+      value: -0.28336877
       objectReference: {fileID: 0}
     - target: {fileID: 3847063293131787598, guid: 07aa9395960b9924f98404c51fef0067,
         type: 3}
@@ -286,7 +286,7 @@ PrefabInstance:
         type: 3}
       propertyPath: TrackedObject
       value: 
-      objectReference: {fileID: 2055306990}
+      objectReference: {fileID: 2126350270}
     - target: {fileID: 8783831372984609202, guid: 07aa9395960b9924f98404c51fef0067,
         type: 3}
       propertyPath: m_Sources.Array.data[0].sourceTransform
@@ -297,11 +297,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 07aa9395960b9924f98404c51fef0067, type: 3}
---- !u!4 &89796544 stripped
+--- !u!4 &70061734 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3847063293131787598, guid: 07aa9395960b9924f98404c51fef0067,
     type: 3}
-  m_PrefabInstance: {fileID: 89796543}
+  m_PrefabInstance: {fileID: 70061733}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &162767352
 PrefabInstance:
@@ -1310,6 +1310,46 @@ MonoBehaviour:
         m_Flags: 0
       m_Flags: 0
     m_Reference: {fileID: 0}
+  Input1On: 0
+  Input2:
+    m_UseReference: 0
+    m_Action:
+      m_Name: 
+      m_Type: 0
+      m_ExpectedControlType: 
+      m_Id: 4c32b0df-53e9-4a92-84e3-2854739e7bab
+      m_Processors: 
+      m_Interactions: 
+      m_SingletonActionBindings: []
+      m_Flags: 0
+    m_Reference: {fileID: 0}
+  Input2On: 0
+  Input3:
+    m_UseReference: 0
+    m_Action:
+      m_Name: 
+      m_Type: 0
+      m_ExpectedControlType: 
+      m_Id: 7d0f5fbb-cd28-4d1a-9239-104e726c32fb
+      m_Processors: 
+      m_Interactions: 
+      m_SingletonActionBindings: []
+      m_Flags: 0
+    m_Reference: {fileID: 0}
+  Input3On: 0
+  Input4:
+    m_UseReference: 0
+    m_Action:
+      m_Name: 
+      m_Type: 0
+      m_ExpectedControlType: 
+      m_Id: 40989c61-dbdf-4c93-a7ca-e16d744baecc
+      m_Processors: 
+      m_Interactions: 
+      m_SingletonActionBindings: []
+      m_Flags: 0
+    m_Reference: {fileID: 0}
+  Input4On: 0
   Output:
     m_UseReference: 0
     m_Action:
@@ -1330,7 +1370,6 @@ MonoBehaviour:
         m_Flags: 0
       m_Flags: 0
     m_Reference: {fileID: 0}
-  InputOn: 0
   OutputOn: 0
 --- !u!114 &825937385
 MonoBehaviour:
@@ -1501,100 +1540,69 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
---- !u!1001 &1042446010
-PrefabInstance:
+--- !u!1 &1096335402
+GameObject:
   m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 2055306990}
-    m_Modifications:
-    - target: {fileID: -4216859302048453862, guid: 030d178db120178479484d78ae5f6018,
-        type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.25
-      objectReference: {fileID: 0}
-    - target: {fileID: -4216859302048453862, guid: 030d178db120178479484d78ae5f6018,
-        type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.25
-      objectReference: {fileID: 0}
-    - target: {fileID: -4216859302048453862, guid: 030d178db120178479484d78ae5f6018,
-        type: 3}
-      propertyPath: m_LocalScale.z
-      value: 0.25
-      objectReference: {fileID: 0}
-    - target: {fileID: -4216859302048453862, guid: 030d178db120178479484d78ae5f6018,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -4216859302048453862, guid: 030d178db120178479484d78ae5f6018,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -4216859302048453862, guid: 030d178db120178479484d78ae5f6018,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -4216859302048453862, guid: 030d178db120178479484d78ae5f6018,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: -4216859302048453862, guid: 030d178db120178479484d78ae5f6018,
-        type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: -4216859302048453862, guid: 030d178db120178479484d78ae5f6018,
-        type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: -4216859302048453862, guid: 030d178db120178479484d78ae5f6018,
-        type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: -4216859302048453862, guid: 030d178db120178479484d78ae5f6018,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -4216859302048453862, guid: 030d178db120178479484d78ae5f6018,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -4216859302048453862, guid: 030d178db120178479484d78ae5f6018,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -4216859302048453862, guid: 030d178db120178479484d78ae5f6018,
-        type: 3}
-      propertyPath: m_ConstrainProportionsScale
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: -927199367670048503, guid: 030d178db120178479484d78ae5f6018,
-        type: 3}
-      propertyPath: m_Name
-      value: CoordinateSystemLH
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 030d178db120178479484d78ae5f6018, type: 3}
---- !u!4 &1042446011 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: -4216859302048453862, guid: 030d178db120178479484d78ae5f6018,
-    type: 3}
-  m_PrefabInstance: {fileID: 1042446010}
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1096335403}
+  - component: {fileID: 1096335404}
+  m_Layer: 0
+  m_Name: Visuals
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1096335403
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1096335402}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 2093469083}
+  - {fileID: 70061734}
+  m_Father: {fileID: 2126350270}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1096335404
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1096335402}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 16bf6189175a7e94a98b46606191e594, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_trackedStateAction:
+    m_Name: Tracked State
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: dd6fc40d-b721-4c94-9c75-ec23ecc89a39
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings:
+    - m_Name: 
+      m_Id: 3009c14d-acb4-4dd2-99a3-64137fa0897b
+      m_Path: <HTCViveTrackerOpenXR>{Right Foot}/devicePose/isTracked
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Tracked State
+      m_Flags: 0
+    m_Flags: 0
 --- !u!850595691 &1515812764
 LightingSettings:
   m_ObjectHideFlags: 0
@@ -2222,7 +2230,7 @@ Transform:
   - {fileID: 825937381}
   - {fileID: 2016596988}
   - {fileID: 2064899225}
-  - {fileID: 2055306990}
+  - {fileID: 2126350270}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1925832594
@@ -2560,6 +2568,46 @@ MonoBehaviour:
         m_Flags: 0
       m_Flags: 0
     m_Reference: {fileID: 0}
+  Input1On: 0
+  Input2:
+    m_UseReference: 0
+    m_Action:
+      m_Name: 
+      m_Type: 0
+      m_ExpectedControlType: 
+      m_Id: 02bd1eff-9597-4d9c-ac0e-f6ec3e6d2ebc
+      m_Processors: 
+      m_Interactions: 
+      m_SingletonActionBindings: []
+      m_Flags: 0
+    m_Reference: {fileID: 0}
+  Input2On: 0
+  Input3:
+    m_UseReference: 0
+    m_Action:
+      m_Name: 
+      m_Type: 0
+      m_ExpectedControlType: 
+      m_Id: 59c64b7a-d845-4373-98a5-d87044ec6421
+      m_Processors: 
+      m_Interactions: 
+      m_SingletonActionBindings: []
+      m_Flags: 0
+    m_Reference: {fileID: 0}
+  Input3On: 0
+  Input4:
+    m_UseReference: 0
+    m_Action:
+      m_Name: 
+      m_Type: 0
+      m_ExpectedControlType: 
+      m_Id: b2b5c1bc-e41a-4ed1-8e48-f942f227f628
+      m_Processors: 
+      m_Interactions: 
+      m_SingletonActionBindings: []
+      m_Flags: 0
+    m_Reference: {fileID: 0}
+  Input4On: 0
   Output:
     m_UseReference: 0
     m_Action:
@@ -2580,7 +2628,6 @@ MonoBehaviour:
         m_Flags: 0
       m_Flags: 0
     m_Reference: {fileID: 0}
-  InputOn: 0
   OutputOn: 0
 --- !u!114 &2016596991
 MonoBehaviour:
@@ -2595,171 +2642,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Prefix: /tracked_device/controllerR
---- !u!1 &2055306989
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2055306990}
-  - component: {fileID: 2055306991}
-  - component: {fileID: 2055306992}
-  m_Layer: 0
-  m_Name: Tracker2
-  m_TagString: GameController
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &2055306990
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2055306989}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1042446011}
-  - {fileID: 89796544}
-  m_Father: {fileID: 1815496901}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2055306991
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2055306989}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c2fadf230d1919748a9aa21d40f74619, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_TrackingType: 0
-  m_UpdateType: 0
-  m_IgnoreTrackingState: 0
-  m_PositionInput:
-    m_UseReference: 0
-    m_Action:
-      m_Name: Position
-      m_Type: 0
-      m_ExpectedControlType: 
-      m_Id: 998ccaae-8bd0-4773-85af-57e80a4950f5
-      m_Processors: 
-      m_Interactions: 
-      m_SingletonActionBindings:
-      - m_Name: 
-        m_Id: 9f5111d5-cbc5-457d-a956-fa176a475e26
-        m_Path: <XRViveTracker>{Right Foot}/devicePose/position
-        m_Interactions: 
-        m_Processors: 
-        m_Groups: 
-        m_Action: Position
-        m_Flags: 0
-      m_Flags: 0
-    m_Reference: {fileID: 0}
-  m_RotationInput:
-    m_UseReference: 0
-    m_Action:
-      m_Name: Rotation
-      m_Type: 0
-      m_ExpectedControlType: 
-      m_Id: b51031bd-0fc1-47f7-b48c-f16c9e7af376
-      m_Processors: 
-      m_Interactions: 
-      m_SingletonActionBindings:
-      - m_Name: 
-        m_Id: 416b18cf-cf4e-47b4-a90a-3f1095a925e5
-        m_Path: <XRViveTracker>{Right Foot}/deviceRotation
-        m_Interactions: 
-        m_Processors: 
-        m_Groups: 
-        m_Action: Rotation
-        m_Flags: 0
-      m_Flags: 0
-    m_Reference: {fileID: 0}
-  m_TrackingStateInput:
-    m_UseReference: 0
-    m_Action:
-      m_Name: Tracking State Input
-      m_Type: 0
-      m_ExpectedControlType: 
-      m_Id: 865e398b-830a-4487-a0d3-970282c7f023
-      m_Processors: 
-      m_Interactions: 
-      m_SingletonActionBindings: []
-      m_Flags: 0
-    m_Reference: {fileID: 0}
-  m_PositionAction:
-    m_Name: Position
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: 998ccaae-8bd0-4773-85af-57e80a4950f5
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings:
-    - m_Name: 
-      m_Id: 9f5111d5-cbc5-457d-a956-fa176a475e26
-      m_Path: <XRController>{RightHand}/devicePosition
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: Position
-      m_Flags: 0
-    m_Flags: 0
-  m_RotationAction:
-    m_Name: Rotation
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: b51031bd-0fc1-47f7-b48c-f16c9e7af376
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings:
-    - m_Name: 
-      m_Id: 416b18cf-cf4e-47b4-a90a-3f1095a925e5
-      m_Path: <XRController>{RightHand}/deviceRotation
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: Rotation
-      m_Flags: 0
-    m_Flags: 0
---- !u!114 &2055306992
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2055306989}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 16bf6189175a7e94a98b46606191e594, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_trackedStateAction:
-    m_Name: Tracked State
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: dd6fc40d-b721-4c94-9c75-ec23ecc89a39
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings:
-    - m_Name: 
-      m_Id: 3009c14d-acb4-4dd2-99a3-64137fa0897b
-      m_Path: <XRViveTracker>{Right Foot}/trackingState
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: Tracked State
-      m_Flags: 0
-    m_Flags: 0
 --- !u!1 &2064899224
 GameObject:
   m_ObjectHideFlags: 0
@@ -2919,8 +2801,8 @@ MonoBehaviour:
       m_Interactions: 
       m_SingletonActionBindings:
       - m_Name: 
-        m_Id: 7afacd9f-ba9e-441c-aa34-58d29b3e1871
-        m_Path: <HTCViveTrackerOpenXR>{Left Foot}/trigger
+        m_Id: fea1bfe8-eec3-4f82-bc1f-a5bf4f265958
+        m_Path: <HTCViveTrackerOpenXR>{Left Foot}/grip
         m_Interactions: 
         m_Processors: 
         m_Groups: 
@@ -2928,6 +2810,70 @@ MonoBehaviour:
         m_Flags: 0
       m_Flags: 0
     m_Reference: {fileID: 0}
+  Input1On: 0
+  Input2:
+    m_UseReference: 0
+    m_Action:
+      m_Name: Input 2
+      m_Type: 0
+      m_ExpectedControlType: 
+      m_Id: 4b9f9685-b9db-4ae7-a4bc-900e8cda5f21
+      m_Processors: 
+      m_Interactions: 
+      m_SingletonActionBindings:
+      - m_Name: 
+        m_Id: bba5f9ee-59de-4744-a0a2-c2c69ed9c7c4
+        m_Path: <HTCViveTrackerOpenXR>{Left Foot}/trigger
+        m_Interactions: 
+        m_Processors: 
+        m_Groups: 
+        m_Action: Input 2
+        m_Flags: 0
+      m_Flags: 0
+    m_Reference: {fileID: 0}
+  Input2On: 0
+  Input3:
+    m_UseReference: 0
+    m_Action:
+      m_Name: Input 3
+      m_Type: 0
+      m_ExpectedControlType: 
+      m_Id: 6d8e45fb-5716-4485-b613-7a10cf194e40
+      m_Processors: 
+      m_Interactions: 
+      m_SingletonActionBindings:
+      - m_Name: 
+        m_Id: c9fe8b00-27ae-4119-8ed8-153759aa8d1c
+        m_Path: <HTCViveTrackerOpenXR>{Left Foot}/pad
+        m_Interactions: 
+        m_Processors: 
+        m_Groups: 
+        m_Action: Input 3
+        m_Flags: 0
+      m_Flags: 0
+    m_Reference: {fileID: 0}
+  Input3On: 0
+  Input4:
+    m_UseReference: 0
+    m_Action:
+      m_Name: Input 4
+      m_Type: 0
+      m_ExpectedControlType: 
+      m_Id: c3fcaf1d-84a9-4bb5-8486-07b49d4f00a1
+      m_Processors: 
+      m_Interactions: 
+      m_SingletonActionBindings:
+      - m_Name: 
+        m_Id: fedb65b4-d426-47ca-8c53-a12d116e1f2b
+        m_Path: <HTCViveTrackerOpenXR>{Left Foot}/menu
+        m_Interactions: 
+        m_Processors: 
+        m_Groups: 
+        m_Action: Input 4
+        m_Flags: 0
+      m_Flags: 0
+    m_Reference: {fileID: 0}
+  Input4On: 0
   Output:
     m_UseReference: 0
     m_Action:
@@ -2948,7 +2894,6 @@ MonoBehaviour:
         m_Flags: 0
       m_Flags: 0
     m_Reference: {fileID: 0}
-  InputOn: 0
   OutputOn: 0
 --- !u!114 &2064899228
 MonoBehaviour:
@@ -2963,6 +2908,100 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Prefix: /tracked_device/tracker1
+--- !u!1001 &2093469082
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1096335403}
+    m_Modifications:
+    - target: {fileID: -4216859302048453862, guid: 030d178db120178479484d78ae5f6018,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.25
+      objectReference: {fileID: 0}
+    - target: {fileID: -4216859302048453862, guid: 030d178db120178479484d78ae5f6018,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.25
+      objectReference: {fileID: 0}
+    - target: {fileID: -4216859302048453862, guid: 030d178db120178479484d78ae5f6018,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.25
+      objectReference: {fileID: 0}
+    - target: {fileID: -4216859302048453862, guid: 030d178db120178479484d78ae5f6018,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -4216859302048453862, guid: 030d178db120178479484d78ae5f6018,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -4216859302048453862, guid: 030d178db120178479484d78ae5f6018,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -4216859302048453862, guid: 030d178db120178479484d78ae5f6018,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -4216859302048453862, guid: 030d178db120178479484d78ae5f6018,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -4216859302048453862, guid: 030d178db120178479484d78ae5f6018,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -4216859302048453862, guid: 030d178db120178479484d78ae5f6018,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -4216859302048453862, guid: 030d178db120178479484d78ae5f6018,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -4216859302048453862, guid: 030d178db120178479484d78ae5f6018,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -4216859302048453862, guid: 030d178db120178479484d78ae5f6018,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -4216859302048453862, guid: 030d178db120178479484d78ae5f6018,
+        type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 030d178db120178479484d78ae5f6018,
+        type: 3}
+      propertyPath: m_Name
+      value: CoordinateSystemLH
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 030d178db120178479484d78ae5f6018, type: 3}
+--- !u!4 &2093469083 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -4216859302048453862, guid: 030d178db120178479484d78ae5f6018,
+    type: 3}
+  m_PrefabInstance: {fileID: 2093469082}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2106909572
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3016,6 +3055,272 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e96fb2843ddc2954e86880a7b38a8194, type: 3}
+--- !u!1 &2126350269
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2126350270}
+  - component: {fileID: 2126350273}
+  - component: {fileID: 2126350272}
+  - component: {fileID: 2126350271}
+  m_Layer: 0
+  m_Name: Tracker2
+  m_TagString: GameController
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2126350270
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2126350269}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -1, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1096335403}
+  m_Father: {fileID: 1815496901}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2126350271
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2126350269}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 26d36c45bf9b43a4fa08268150a1fc46, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Input1:
+    m_UseReference: 0
+    m_Action:
+      m_Name: Input 1
+      m_Type: 0
+      m_ExpectedControlType: 
+      m_Id: bf353132-5ab8-4e71-9cf5-0de82eb185f2
+      m_Processors: 
+      m_Interactions: 
+      m_SingletonActionBindings:
+      - m_Name: 
+        m_Id: fea1bfe8-eec3-4f82-bc1f-a5bf4f265958
+        m_Path: <HTCViveTrackerOpenXR>{Right Foot}/grip
+        m_Interactions: 
+        m_Processors: 
+        m_Groups: 
+        m_Action: Input 1
+        m_Flags: 0
+      m_Flags: 0
+    m_Reference: {fileID: 0}
+  Input1On: 0
+  Input2:
+    m_UseReference: 0
+    m_Action:
+      m_Name: Input 2
+      m_Type: 0
+      m_ExpectedControlType: 
+      m_Id: 4b9f9685-b9db-4ae7-a4bc-900e8cda5f21
+      m_Processors: 
+      m_Interactions: 
+      m_SingletonActionBindings:
+      - m_Name: 
+        m_Id: bba5f9ee-59de-4744-a0a2-c2c69ed9c7c4
+        m_Path: <HTCViveTrackerOpenXR>{Right Foot}/trigger
+        m_Interactions: 
+        m_Processors: 
+        m_Groups: 
+        m_Action: Input 2
+        m_Flags: 0
+      m_Flags: 0
+    m_Reference: {fileID: 0}
+  Input2On: 0
+  Input3:
+    m_UseReference: 0
+    m_Action:
+      m_Name: Input 3
+      m_Type: 0
+      m_ExpectedControlType: 
+      m_Id: 6d8e45fb-5716-4485-b613-7a10cf194e40
+      m_Processors: 
+      m_Interactions: 
+      m_SingletonActionBindings:
+      - m_Name: 
+        m_Id: c9fe8b00-27ae-4119-8ed8-153759aa8d1c
+        m_Path: <HTCViveTrackerOpenXR>{Right Foot}/pad
+        m_Interactions: 
+        m_Processors: 
+        m_Groups: 
+        m_Action: Input 3
+        m_Flags: 0
+      m_Flags: 0
+    m_Reference: {fileID: 0}
+  Input3On: 0
+  Input4:
+    m_UseReference: 0
+    m_Action:
+      m_Name: Input 4
+      m_Type: 0
+      m_ExpectedControlType: 
+      m_Id: c3fcaf1d-84a9-4bb5-8486-07b49d4f00a1
+      m_Processors: 
+      m_Interactions: 
+      m_SingletonActionBindings:
+      - m_Name: 
+        m_Id: fedb65b4-d426-47ca-8c53-a12d116e1f2b
+        m_Path: <HTCViveTrackerOpenXR>{Right Foot}/menu
+        m_Interactions: 
+        m_Processors: 
+        m_Groups: 
+        m_Action: Input 4
+        m_Flags: 0
+      m_Flags: 0
+    m_Reference: {fileID: 0}
+  Input4On: 0
+  Output:
+    m_UseReference: 0
+    m_Action:
+      m_Name: Output
+      m_Type: 0
+      m_ExpectedControlType: 
+      m_Id: 33b9db90-37e7-40cb-980c-59e19cf7e956
+      m_Processors: 
+      m_Interactions: 
+      m_SingletonActionBindings:
+      - m_Name: 
+        m_Id: f6912578-f99b-4236-80d1-74ec44be3e70
+        m_Path: <HTCViveTrackerOpenXR>{Right Foot}/haptic
+        m_Interactions: 
+        m_Processors: 
+        m_Groups: 
+        m_Action: Output
+        m_Flags: 0
+      m_Flags: 0
+    m_Reference: {fileID: 0}
+  OutputOn: 0
+--- !u!114 &2126350272
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2126350269}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dfcdb879d8850bf499c6a7aff57c5e22, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Prefix: /tracked_device/tracker2
+--- !u!114 &2126350273
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2126350269}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c2fadf230d1919748a9aa21d40f74619, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_TrackingType: 0
+  m_UpdateType: 0
+  m_IgnoreTrackingState: 0
+  m_PositionInput:
+    m_UseReference: 0
+    m_Action:
+      m_Name: Position
+      m_Type: 0
+      m_ExpectedControlType: 
+      m_Id: 998ccaae-8bd0-4773-85af-57e80a4950f5
+      m_Processors: 
+      m_Interactions: 
+      m_SingletonActionBindings:
+      - m_Name: 
+        m_Id: 9f5111d5-cbc5-457d-a956-fa176a475e26
+        m_Path: <HTCViveTrackerOpenXR>{Right Foot}/devicePose/position
+        m_Interactions: 
+        m_Processors: 
+        m_Groups: 
+        m_Action: Position
+        m_Flags: 0
+      m_Flags: 0
+    m_Reference: {fileID: 0}
+  m_RotationInput:
+    m_UseReference: 0
+    m_Action:
+      m_Name: Rotation
+      m_Type: 0
+      m_ExpectedControlType: 
+      m_Id: b51031bd-0fc1-47f7-b48c-f16c9e7af376
+      m_Processors: 
+      m_Interactions: 
+      m_SingletonActionBindings:
+      - m_Name: 
+        m_Id: 416b18cf-cf4e-47b4-a90a-3f1095a925e5
+        m_Path: <HTCViveTrackerOpenXR>{Right Foot}/devicePose/rotation
+        m_Interactions: 
+        m_Processors: 
+        m_Groups: 
+        m_Action: Rotation
+        m_Flags: 0
+      m_Flags: 0
+    m_Reference: {fileID: 0}
+  m_TrackingStateInput:
+    m_UseReference: 0
+    m_Action:
+      m_Name: Tracking State Input
+      m_Type: 0
+      m_ExpectedControlType: 
+      m_Id: 865e398b-830a-4487-a0d3-970282c7f023
+      m_Processors: 
+      m_Interactions: 
+      m_SingletonActionBindings: []
+      m_Flags: 0
+    m_Reference: {fileID: 0}
+  m_PositionAction:
+    m_Name: Position
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 998ccaae-8bd0-4773-85af-57e80a4950f5
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings:
+    - m_Name: 
+      m_Id: 9f5111d5-cbc5-457d-a956-fa176a475e26
+      m_Path: <XRController>{RightHand}/devicePosition
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Position
+      m_Flags: 0
+    m_Flags: 0
+  m_RotationAction:
+    m_Name: Rotation
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: b51031bd-0fc1-47f7-b48c-f16c9e7af376
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings:
+    - m_Name: 
+      m_Id: 416b18cf-cf4e-47b4-a90a-3f1095a925e5
+      m_Path: <XRController>{RightHand}/deviceRotation
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Rotation
+      m_Flags: 0
+    m_Flags: 0
 --- !u!1001 &2139796363
 PrefabInstance:
   m_ObjectHideFlags: 0

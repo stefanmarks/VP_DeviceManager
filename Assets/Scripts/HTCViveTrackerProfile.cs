@@ -143,11 +143,17 @@ namespace UnityEngine.XR.OpenXR.Features.Interactions
 			public const string devicePose = "/input/grip/pose";
 
 			// type ButtonControl
-			public const string systemClick  = "/input/system/click"; // may not be available for application use
-			public const string menuClick    = "/input/menu/click";
-			public const string gripClick    = "/input/squeeze/click";
-			public const string triggerClick = "/input/trigger/click";
-			public const string padClick     = "/input/trackpad/click";
+			public const string systemClick   = "/input/system/click"; // may not be available for application use
+			public const string menuClick     = "/input/menu/click";
+			public const string gripClick     = "/input/squeeze/click";
+			public const string triggerClick  = "/input/trigger/click";
+			public const string trackpadClick = "/input/trackpad/click";
+			public const string trackpadTouch = "/input/trackpad/touch";
+
+			// type AxisControl
+			public const string triggerValue = "/input/trigger/value";
+			public const string padXValue    = "/input/trackpad/x";
+			public const string padYValue    = "/input/trackpad/y";
 
 			//type HapticControl
 			public const string haptic = "/output/haptic";
@@ -163,7 +169,7 @@ namespace UnityEngine.XR.OpenXR.Features.Interactions
 			/// A [ButtonControl](xref:UnityEngine.InputSystem.Controls.ButtonControl) that represents information from the HTC Vive Controller Profile select OpenXR binding.
 			/// </summary>
 			[Preserve, InputControl(aliases = new[] { "Secondary", "selectbutton" }, usage = "SystemButton")]
-			public ButtonControl select { get; private set; }
+			public ButtonControl system { get; private set; }
 
 			/// <summary>
 			/// A [ButtonControl](xref:UnityEngine.InputSystem.Controls.ButtonControl) that represents information from the <see cref="HTCViveControllerProfile.squeeze"/> OpenXR binding.
@@ -186,9 +192,16 @@ namespace UnityEngine.XR.OpenXR.Features.Interactions
 			/// <summary>
 			/// A [ButtonControl](xref:UnityEngine.InputSystem.Controls.ButtonControl) that represents information from the <see cref="HTCViveControllerProfile.trackpadClick"/> OpenXR binding.
 			/// </summary>
-			[Preserve, InputControl(aliases = new[] { "joystickorpadpressed", "touchpadpressed" }, usage = "Primary2DAxisClick")]
-			public ButtonControl trackpad { get; private set; }
+			[Preserve, InputControl(alias = "trackpadButton", usage = "TrackpadButton")]
+			public ButtonControl pad { get; private set; }
 
+			/// <summary>
+			/// Trackpad touch. Only accessible on vive tracker 3.0 via USB
+			/// <see cref="TrackerComponentPaths.padTouch"/>
+			/// </summary>
+			[Preserve, InputControl(alias = "trackpadTouch", usage = "TrackpadTouch")]
+			public ButtonControl padTouch { get; private set; }
+			
 			/// <summary>
 			/// A <see cref="PoseControl"/> that represents information from the <see cref="HTCViveControllerProfile.grip"/> OpenXR binding.
 			/// </summary>
@@ -220,6 +233,27 @@ namespace UnityEngine.XR.OpenXR.Features.Interactions
 			new public QuaternionControl deviceRotation { get; private set; }
 
 			/// <summary>
+			/// Trigger pull analog value. Only accessible on vive tracker 3.0 via USB
+			/// <see cref="TrackerComponentPaths.triggerValue"/>
+			/// </summary>
+			[Preserve, InputControl(alias = "triggerValue", usage = "TriggerValue")]
+			public AxisControl triggerValue { get; private set; }
+
+			/// <summary>
+			/// Trackpad X/horizontal analog value. Only accessible on vive tracker 3.0 via USB
+			/// <see cref="TrackerComponentPaths.padXValue"/>
+			/// </summary>
+			[Preserve, InputControl(alias = "trackpadXValue", usage = "TrackpadXValue")]
+			public AxisControl padXValue { get; private set; }
+
+			/// <summary>
+			/// Trackpad Y/vertical analog value. Only accessible on vive tracker 3.0 via USB
+			/// <see cref="TrackerComponentPaths.padYValue"/>
+			/// </summary>
+			[Preserve, InputControl(alias = "trackpadYValue", usage = "TrackpadYValue")]
+			public AxisControl padYValue { get; private set; }
+			
+			/// <summary>
 			/// A <see cref="HapticControl"/> that represents the <see cref="HTCViveControllerProfile.haptic"/> binding.
 			/// </summary>
 			[Preserve, InputControl(usage = "Haptic")]
@@ -230,21 +264,27 @@ namespace UnityEngine.XR.OpenXR.Features.Interactions
 			{
 				base.FinishSetup();
 
-				select   = GetChildControl<ButtonControl>("select");
-				grip     = GetChildControl<ButtonControl>("grip");
-				menu     = GetChildControl<ButtonControl>("menu");
-				trigger  = GetChildControl<ButtonControl>("trigger");
-				trackpad = GetChildControl<ButtonControl>("pad");
-
 				devicePose     = GetChildControl<PoseControl>("devicePose");
 				isTracked      = GetChildControl<ButtonControl>("isTracked");
 				trackingState  = GetChildControl<IntegerControl>("trackingState");
 				devicePosition = GetChildControl<Vector3Control>("devicePosition");
 				deviceRotation = GetChildControl<QuaternionControl>("deviceRotation");
 
+				system   = GetChildControl<ButtonControl>("system");
+				menu     = GetChildControl<ButtonControl>("menu");
+				grip     = GetChildControl<ButtonControl>("grip");
+				trigger  = GetChildControl<ButtonControl>("trigger");
+				pad      = GetChildControl<ButtonControl>("pad");
+				padTouch = GetChildControl<ButtonControl>("padTouch");
+
+				triggerValue = GetChildControl<AxisControl>("triggerValue");
+				padXValue    = GetChildControl<AxisControl>("padXValue");
+				padYValue    = GetChildControl<AxisControl>("padYValue");
+
 				haptic = GetChildControl<HapticControl>("haptic");
 
 				var deviceDescriptor = XRDeviceDescriptor.FromJson(description.capabilities);
+				Debug.Log(description.capabilities.ToString());
 
 				if ((deviceDescriptor.characteristics & (InputDeviceCharacteristics)InputDeviceTrackerCharacteristics.TrackerLeftFoot) != 0)
 					InputSystem.InputSystem.SetDeviceUsage(this, "Left Foot");
@@ -411,105 +451,13 @@ namespace UnityEngine.XR.OpenXR.Features.Interactions
 				},
 				actions = new List<ActionConfig>()
 				{
-					new ActionConfig()
-					{
-						name = "grip",
-						localizedName = "Grip",
-						type = ActionType.Binary,
-						usages = new List<string>()
-						{
-							"GripButton"
-						},
-						bindings = new List<ActionBinding>()
-						{
-							new ActionBinding()
-							{
-								interactionPath = HTCViveTrackerComponentPaths.gripClick,
-								interactionProfileName = profile,
-							}
-						}
-					},
-					new ActionConfig()
-					{
-						name = "menu",
-						localizedName = "Menu",
-						type = ActionType.Binary,
-						usages = new List<string>()
-						{
-							"MenuButton"
-						},
-						bindings = new List<ActionBinding>()
-						{
-							new ActionBinding()
-							{
-								interactionPath = HTCViveTrackerComponentPaths.menuClick,
-								interactionProfileName = profile,
-							}
-						}
-					},
-					new ActionConfig()
-					{
-						name = "select",
-						localizedName = "Select",
-						type = ActionType.Binary,
-						usages = new List<string>()
-						{
-							"SystemButton"
-						},
-						bindings = new List<ActionBinding>()
-						{
-							new ActionBinding()
-							{
-								interactionPath = HTCViveTrackerComponentPaths.systemClick,
-								interactionProfileName = profile,
-							}
-						}
-					},
-					new ActionConfig()
-					{
-						name = "trigger",
-						localizedName = "Trigger",
-						type = ActionType.Binary,
-						usages = new List<string>()
-						{
-							"TriggerButton"
-						},
-						bindings = new List<ActionBinding>()
-						{
-							new ActionBinding()
-							{
-								interactionPath = HTCViveTrackerComponentPaths.triggerClick,
-								interactionProfileName = profile,
-							}
-						}
-					},
-					new ActionConfig()
-					{
-						name = "pad",
-						localizedName = "Pad",
-						type = ActionType.Binary,
-						usages = new List<string>()
-						{
-							"TrackpadButton"
-						},
-						bindings = new List<ActionBinding>()
-						{
-							new ActionBinding()
-							{
-								interactionPath = HTCViveTrackerComponentPaths.padClick,
-								interactionProfileName = profile,
-							}
-						}
-					},
+					// Device Pose
 					new ActionConfig()
 					{
 						name = "devicePose",
-						localizedName = "Device Pose",
+						localizedName = "Grip Pose",
 						type = ActionType.Pose,
-						usages = new List<string>()
-						{
-							"Device"
-						},
+						usages = new List<string>() { "Device" },
 						bindings = new List<ActionBinding>()
 						{
 							new ActionBinding()
@@ -519,16 +467,157 @@ namespace UnityEngine.XR.OpenXR.Features.Interactions
 							}
 						}
 					},
-					// Haptics
+					// System button
+					new ActionConfig()
+					{
+						name = "system",
+						localizedName = "System",
+						type = ActionType.Binary,
+						usages = new List<string>() { "SystemButton" },
+						bindings = new List<ActionBinding>()
+						{
+							new ActionBinding()
+							{
+								interactionPath = HTCViveTrackerComponentPaths.systemClick,
+								interactionProfileName = profile,
+							}
+						}
+					},
+					// Menu button
+					new ActionConfig()
+					{
+						name = "menu",
+						localizedName = "Menu",
+						type = ActionType.Binary,
+						usages = new List<string>() { "MenuButton" },
+						bindings = new List<ActionBinding>()
+						{
+							new ActionBinding()
+							{
+								interactionPath = HTCViveTrackerComponentPaths.menuClick,
+								interactionProfileName = profile,
+							}
+						}
+					},
+					// Grip button
+					new ActionConfig()
+					{
+						name = "grip",
+						localizedName = "Grip",
+						type = ActionType.Binary,
+						usages = new List<string>() { "GripButton" },
+						bindings = new List<ActionBinding>()
+						{
+							new ActionBinding()
+							{
+								interactionPath = HTCViveTrackerComponentPaths.gripClick,
+								interactionProfileName = profile,
+							}
+						}
+					},
+					// Trigger button
+					new ActionConfig()
+					{
+						name = "trigger",
+						localizedName = "Trigger",
+						type = ActionType.Binary,
+						usages = new List<string>()  { "TriggerButton" },
+						bindings = new List<ActionBinding>()
+						{
+							new ActionBinding()
+							{
+								interactionPath = HTCViveTrackerComponentPaths.triggerClick,
+								interactionProfileName = profile,
+							}
+						}
+					},
+					// Trackpad button
+					new ActionConfig()
+					{
+						name = "pad",
+						localizedName = "Pad",
+						type = ActionType.Binary,
+						usages = new List<string>() { "TrackpadButton" },
+						bindings = new List<ActionBinding>()
+						{
+							new ActionBinding()
+							{
+								interactionPath = HTCViveTrackerComponentPaths.trackpadClick,
+								interactionProfileName = profile,
+							}
+						}
+					},
+					// Trackpad touch
+					new ActionConfig()
+					{
+						name = "padTouch",
+						localizedName = "PadTouch",
+						type = ActionType.Binary,
+						usages = new List<string>() { "TrackpadTouch" },
+						bindings = new List<ActionBinding>()
+						{
+							new ActionBinding()
+							{
+								interactionPath = HTCViveTrackerComponentPaths.trackpadTouch,
+								interactionProfileName = profile,
+							}
+						}
+					},
+					// Trigger pull analog value
+					new ActionConfig()
+					{
+						name = "triggerValue",
+						localizedName = "TriggerValue",
+						type = ActionType.Axis1D,
+						usages = new List<string>() { "TrackpadValue" },
+						bindings = new List<ActionBinding>()
+						{
+							new ActionBinding()
+							{
+								interactionPath = HTCViveTrackerComponentPaths.triggerValue,
+								interactionProfileName = profile,
+							}
+						}
+					},
+					// Trackpad X/horizontal analog value
+					new ActionConfig()
+					{
+						name = "padXValue",
+						localizedName = "Trackpad X Value",
+						type = ActionType.Axis1D,
+						usages = new List<string>() { "TrackpadXValue" },
+						bindings = new List<ActionBinding>()
+						{
+							new ActionBinding()
+							{
+								interactionPath = HTCViveTrackerComponentPaths.padXValue,
+								interactionProfileName = profile,
+							}
+						}
+					},
+					// Trackpad Y/vertical analog value
+					new ActionConfig()
+					{
+						name = "padYValue",
+						localizedName = "Trackpad Y Value",
+						type = ActionType.Axis1D,
+						usages = new List<string>() { "TrackpadYValue" },
+						bindings = new List<ActionBinding>()
+						{
+							new ActionBinding()
+							{
+								interactionPath = HTCViveTrackerComponentPaths.padYValue,
+								interactionProfileName = profile,
+							}
+						}
+					},
+					// Haptic output
 					new ActionConfig()
 					{
 						name = "haptic",
 						localizedName = "Haptic Output",
 						type = ActionType.Vibrate,
-						usages = new List<string>() 
-						{
-							"Haptic" 
-						},
+						usages = new List<string>() { "Haptic" },
 						bindings = new List<ActionBinding>()
 						{
 							new ActionBinding()
