@@ -686,6 +686,7 @@ GameObject:
   - component: {fileID: 369523167}
   - component: {fileID: 369523168}
   - component: {fileID: 369523169}
+  - component: {fileID: 369523170}
   m_Layer: 0
   m_Name: HMD
   m_TagString: Untagged
@@ -826,6 +827,19 @@ MonoBehaviour:
       m_Action: Tracked State
       m_Flags: 0
     m_Flags: 0
+--- !u!114 &369523170
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 369523166}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dfcdb879d8850bf499c6a7aff57c5e22, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Prefix: /tracked_device/hmd
 --- !u!1 &408442338
 GameObject:
   m_ObjectHideFlags: 0
@@ -933,7 +947,8 @@ MonoBehaviour:
   portOutgoing: 57110
   startClientList:
   - 127.0.0.1
-  - 192.168.0.110
+  - 156.62.171.39
+  DistributeData: 0
   debugDataStream: 0
 --- !u!1 &459642985
 GameObject:
