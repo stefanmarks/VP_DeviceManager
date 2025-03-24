@@ -1152,8 +1152,8 @@ GameObject:
   m_Component:
   - component: {fileID: 825937381}
   - component: {fileID: 825937382}
-  - component: {fileID: 825937385}
   - component: {fileID: 825937384}
+  - component: {fileID: 825937385}
   m_Layer: 0
   m_Name: ControllerL
   m_TagString: GameController
@@ -1301,7 +1301,7 @@ MonoBehaviour:
       m_Interactions: 
       m_SingletonActionBindings:
       - m_Name: 
-        m_Id: 7afacd9f-ba9e-441c-aa34-58d29b3e1871
+        m_Id: bb825a95-6d6c-4f8b-a98b-d0930f0f90a9
         m_Path: <XRController>{LeftHand}/triggerPressed
         m_Interactions: 
         m_Processors: 
@@ -1314,20 +1314,28 @@ MonoBehaviour:
   Input2:
     m_UseReference: 0
     m_Action:
-      m_Name: 
+      m_Name: Input 2
       m_Type: 0
       m_ExpectedControlType: 
       m_Id: 4c32b0df-53e9-4a92-84e3-2854739e7bab
       m_Processors: 
       m_Interactions: 
-      m_SingletonActionBindings: []
+      m_SingletonActionBindings:
+      - m_Name: 
+        m_Id: 703a370e-2869-4b81-b487-7233d0f3a93f
+        m_Path: <XRController>{LeftHand}/gripPressed
+        m_Interactions: 
+        m_Processors: 
+        m_Groups: 
+        m_Action: Input 2
+        m_Flags: 0
       m_Flags: 0
     m_Reference: {fileID: 0}
   Input2On: 0
   Input3:
     m_UseReference: 0
     m_Action:
-      m_Name: 
+      m_Name: Input 3
       m_Type: 0
       m_ExpectedControlType: 
       m_Id: 7d0f5fbb-cd28-4d1a-9239-104e726c32fb
@@ -1340,7 +1348,7 @@ MonoBehaviour:
   Input4:
     m_UseReference: 0
     m_Action:
-      m_Name: 
+      m_Name: Input 4
       m_Type: 0
       m_ExpectedControlType: 
       m_Id: 40989c61-dbdf-4c93-a7ca-e16d744baecc
@@ -1395,7 +1403,7 @@ GameObject:
   - component: {fileID: 924950009}
   - component: {fileID: 924950010}
   m_Layer: 0
-  m_Name: VIsuals
+  m_Name: Visuals
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2410,8 +2418,8 @@ GameObject:
   m_Component:
   - component: {fileID: 2016596988}
   - component: {fileID: 2016596989}
-  - component: {fileID: 2016596991}
   - component: {fileID: 2016596990}
+  - component: {fileID: 2016596991}
   m_Layer: 0
   m_Name: ControllerR
   m_TagString: GameController
@@ -2572,20 +2580,28 @@ MonoBehaviour:
   Input2:
     m_UseReference: 0
     m_Action:
-      m_Name: 
+      m_Name: Input 2
       m_Type: 0
       m_ExpectedControlType: 
       m_Id: 02bd1eff-9597-4d9c-ac0e-f6ec3e6d2ebc
       m_Processors: 
       m_Interactions: 
-      m_SingletonActionBindings: []
+      m_SingletonActionBindings:
+      - m_Name: 
+        m_Id: 20cf168d-28cd-4a6f-858a-36703cb9bc70
+        m_Path: <XRController>{RightHand}/gripPressed
+        m_Interactions: 
+        m_Processors: 
+        m_Groups: 
+        m_Action: Input 2
+        m_Flags: 0
       m_Flags: 0
     m_Reference: {fileID: 0}
   Input2On: 0
   Input3:
     m_UseReference: 0
     m_Action:
-      m_Name: 
+      m_Name: Input 3
       m_Type: 0
       m_ExpectedControlType: 
       m_Id: 59c64b7a-d845-4373-98a5-d87044ec6421
@@ -2598,7 +2614,7 @@ MonoBehaviour:
   Input4:
     m_UseReference: 0
     m_Action:
-      m_Name: 
+      m_Name: Input 4
       m_Type: 0
       m_ExpectedControlType: 
       m_Id: b2b5c1bc-e41a-4ed1-8e48-f942f227f628
@@ -2652,8 +2668,8 @@ GameObject:
   m_Component:
   - component: {fileID: 2064899225}
   - component: {fileID: 2064899226}
-  - component: {fileID: 2064899228}
   - component: {fileID: 2064899227}
+  - component: {fileID: 2064899228}
   m_Layer: 0
   m_Name: Tracker1
   m_TagString: GameController
@@ -3065,8 +3081,8 @@ GameObject:
   m_Component:
   - component: {fileID: 2126350270}
   - component: {fileID: 2126350273}
-  - component: {fileID: 2126350272}
   - component: {fileID: 2126350271}
+  - component: {fileID: 2126350272}
   m_Layer: 0
   m_Name: Tracker2
   m_TagString: GameController
