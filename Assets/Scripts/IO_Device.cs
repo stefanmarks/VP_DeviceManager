@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.XR;
 
+[AddComponentMenu("VP/IO Device")]
 public class IO_Device : MonoBehaviour
 {
 	public InputActionProperty Input1;

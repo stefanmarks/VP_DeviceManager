@@ -1,6 +1,7 @@
 using SentienceLab.OSC;
 using UnityEngine;
 
+[AddComponentMenu("VP/OSC Device")]
 public class OSC_Device : MonoBehaviour
 {
 	public string Prefix = "/tracked_device";

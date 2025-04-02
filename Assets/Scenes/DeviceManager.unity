@@ -840,6 +840,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Prefix: /tracked_device/hmd
+  MinimumUpdateInterval: 1
 --- !u!1 &408442338
 GameObject:
   m_ObjectHideFlags: 0
@@ -852,6 +853,7 @@ GameObject:
   - component: {fileID: 408442340}
   - component: {fileID: 408442339}
   - component: {fileID: 408442342}
+  - component: {fileID: 408442343}
   m_Layer: 0
   m_Name: Management
   m_TagString: Untagged
@@ -950,6 +952,20 @@ MonoBehaviour:
   - 156.62.171.39
   DistributeData: 0
   debugDataStream: 0
+--- !u!114 &408442343
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 408442338}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98265fa89d4c21f4c9732396b5277d97, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  COM_Port: COM13
+  Baudrate: 57600
 --- !u!1 &459642985
 GameObject:
   m_ObjectHideFlags: 0
@@ -1407,6 +1423,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Prefix: /tracked_device/controllerL
+  MinimumUpdateInterval: 1
 --- !u!1 &924950008
 GameObject:
   m_ObjectHideFlags: 0
@@ -2673,6 +2690,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Prefix: /tracked_device/controllerR
+  MinimumUpdateInterval: 1
 --- !u!1 &2064899224
 GameObject:
   m_ObjectHideFlags: 0
@@ -2939,6 +2957,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Prefix: /tracked_device/tracker1
+  MinimumUpdateInterval: 1
 --- !u!1001 &2093469082
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3251,6 +3270,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Prefix: /tracked_device/tracker2
+  MinimumUpdateInterval: 1
 --- !u!114 &2126350273
 MonoBehaviour:
   m_ObjectHideFlags: 0
