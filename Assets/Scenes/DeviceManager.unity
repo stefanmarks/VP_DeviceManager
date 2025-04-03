@@ -554,18 +554,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6082932030049596631, guid: 07aa9395960b9924f98404c51fef0067,
-        type: 3}
-      propertyPath: m_Text
-      value: '<b>{TrackedObjectName</b>
-
-        X: {0:F3}
-
-        Y: {1:F3}
-
-        Z:
-        {2:F3}'
-      objectReference: {fileID: 0}
     - target: {fileID: 6659288554024526403, guid: 07aa9395960b9924f98404c51fef0067,
         type: 3}
       propertyPath: TrackedObject
@@ -975,14 +963,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98265fa89d4c21f4c9732396b5277d97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DeviceType: 0
+  DeviceType: 1
   DiscoveryTimeout: 10000
-  COM_Port: COM13
+  COM_Port: COM7
   Baudrate: 57600
-  StopBits: 0
+  StopBits: 1
   Parity: 0
-  Handshake: 0
+  Handshake: 2
   ReceiveTimeout: 100
+  OSC_Prefix: /
 --- !u!1 &459642985
 GameObject:
   m_ObjectHideFlags: 0

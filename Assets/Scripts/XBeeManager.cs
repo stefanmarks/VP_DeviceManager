@@ -34,7 +34,8 @@ public class XBeeManager : MonoBehaviour
 	public int       ReceiveTimeout = 100;
 
 	[Header("OSC")]
-	public string    OSC_Prefix = "";
+	public string OSC_Prefix            = "/";
+	public float  MinimumUpdateInterval = 1.0f;
 
 
 	public void Start()
@@ -56,6 +57,7 @@ public class XBeeManager : MonoBehaviour
 		m_remoteDevices = new Dictionary<XBee64BitAddress, RemoteXBeeDevice>();
 		m_newDevices    = new List<RemoteXBeeDevice>();
 		m_oscVariables  = new Dictionary<string, OSC_BoolVariable>();
+		m_nextIO_Update = 0;
 
 		StartCoroutine(OpenCoordinator());
 	}
@@ -210,7 +212,7 @@ public class XBeeManager : MonoBehaviour
 			}
 
 			// set new value
-			bool newValue = kv.Value == IOValue.HIGH;
+			bool newValue = kv.Value == IOValue.LOW;
 			if (oscVar.Value != newValue)
 			{
 				oscVar.Value = newValue;
@@ -221,6 +223,7 @@ public class XBeeManager : MonoBehaviour
 
 	public void Update()
 	{
+		// query new devices
 		if (m_newDevices.Count > 0)
 		{
 			foreach (var device in m_newDevices) 
@@ -228,6 +231,18 @@ public class XBeeManager : MonoBehaviour
 				StartCoroutine(ReadDeviceStatus(device));
 			}
 			m_newDevices.Clear();
+		}
+
+		// force send IO updates in intervals
+		m_nextIO_Update -= Time.deltaTime;
+		bool doUpdate = m_nextIO_Update <= 0;
+		if (doUpdate)
+		{
+			foreach (var kv in m_oscVariables)
+			{
+				kv.Value.SendUpdate();
+			}
+			m_nextIO_Update = MinimumUpdateInterval;
 		}
 	}
 
@@ -240,4 +255,5 @@ public class XBeeManager : MonoBehaviour
 
 	protected Dictionary<XBee64BitAddress, RemoteXBeeDevice> m_remoteDevices;
 	protected Dictionary<string, OSC_BoolVariable>           m_oscVariables;
+	protected double                                         m_nextIO_Update;
 }
