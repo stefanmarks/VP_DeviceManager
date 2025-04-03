@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class InfoUI : MonoBehaviour
+public class InfoUI_3D : MonoBehaviour
 {
 	public Transform TrackedObject;
 
@@ -20,7 +20,7 @@ public class InfoUI : MonoBehaviour
 		}
 
 		m_formatString = TextUI.text;
-		m_formatString = m_formatString.Replace("TrackedObjectName", TrackedObject.name);
+		m_formatString = m_formatString.Replace("{TrackedObjectName}", TrackedObject.name);
 	}
 
 	

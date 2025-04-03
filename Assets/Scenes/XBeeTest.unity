@@ -243,6 +243,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98265fa89d4c21f4c9732396b5277d97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  DeviceType: 1
+  DiscoveryTimeout: 10000
   COM_Port: COM13
   Baudrate: 57600
   StopBits: 1

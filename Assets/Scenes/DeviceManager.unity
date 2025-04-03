@@ -554,6 +554,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6082932030049596631, guid: 07aa9395960b9924f98404c51fef0067,
+        type: 3}
+      propertyPath: m_Text
+      value: '<b>{TrackedObjectName</b>
+
+        X: {0:F3}
+
+        Y: {1:F3}
+
+        Z:
+        {2:F3}'
+      objectReference: {fileID: 0}
     - target: {fileID: 6659288554024526403, guid: 07aa9395960b9924f98404c51fef0067,
         type: 3}
       propertyPath: TrackedObject
@@ -839,8 +851,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfcdb879d8850bf499c6a7aff57c5e22, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Prefix: /tracked_device/hmd
-  MinimumUpdateInterval: 1
+  OSC_Prefix: /hmd
 --- !u!1 &408442338
 GameObject:
   m_ObjectHideFlags: 0
@@ -964,8 +975,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98265fa89d4c21f4c9732396b5277d97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  DeviceType: 0
+  DiscoveryTimeout: 10000
   COM_Port: COM13
   Baudrate: 57600
+  StopBits: 0
+  Parity: 0
+  Handshake: 0
+  ReceiveTimeout: 100
 --- !u!1 &459642985
 GameObject:
   m_ObjectHideFlags: 0
@@ -1183,8 +1200,8 @@ GameObject:
   m_Component:
   - component: {fileID: 825937381}
   - component: {fileID: 825937382}
-  - component: {fileID: 825937384}
   - component: {fileID: 825937385}
+  - component: {fileID: 825937384}
   m_Layer: 0
   m_Name: ControllerL
   m_TagString: GameController
@@ -1321,6 +1338,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 26d36c45bf9b43a4fa08268150a1fc46, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  OSC_Prefix: /controllerL
+  MinimumUpdateInterval: 1
   Input1:
     m_UseReference: 0
     m_Action:
@@ -1422,8 +1441,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfcdb879d8850bf499c6a7aff57c5e22, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Prefix: /tracked_device/controllerL
-  MinimumUpdateInterval: 1
+  OSC_Prefix: /controllerL
 --- !u!1 &924950008
 GameObject:
   m_ObjectHideFlags: 0
@@ -2450,8 +2468,8 @@ GameObject:
   m_Component:
   - component: {fileID: 2016596988}
   - component: {fileID: 2016596989}
-  - component: {fileID: 2016596990}
   - component: {fileID: 2016596991}
+  - component: {fileID: 2016596990}
   m_Layer: 0
   m_Name: ControllerR
   m_TagString: GameController
@@ -2588,6 +2606,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 26d36c45bf9b43a4fa08268150a1fc46, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  OSC_Prefix: /controllerR
+  MinimumUpdateInterval: 1
   Input1:
     m_UseReference: 0
     m_Action:
@@ -2689,8 +2709,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfcdb879d8850bf499c6a7aff57c5e22, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Prefix: /tracked_device/controllerR
-  MinimumUpdateInterval: 1
+  OSC_Prefix: /controllerR
 --- !u!1 &2064899224
 GameObject:
   m_ObjectHideFlags: 0
@@ -2701,8 +2720,8 @@ GameObject:
   m_Component:
   - component: {fileID: 2064899225}
   - component: {fileID: 2064899226}
-  - component: {fileID: 2064899227}
   - component: {fileID: 2064899228}
+  - component: {fileID: 2064899227}
   m_Layer: 0
   m_Name: Tracker1
   m_TagString: GameController
@@ -2839,6 +2858,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 26d36c45bf9b43a4fa08268150a1fc46, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  OSC_Prefix: /tracker1
+  MinimumUpdateInterval: 1
   Input1:
     m_UseReference: 0
     m_Action:
@@ -2956,8 +2977,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfcdb879d8850bf499c6a7aff57c5e22, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Prefix: /tracked_device/tracker1
-  MinimumUpdateInterval: 1
+  OSC_Prefix: /tracker1
 --- !u!1001 &2093469082
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3115,8 +3135,8 @@ GameObject:
   m_Component:
   - component: {fileID: 2126350270}
   - component: {fileID: 2126350273}
-  - component: {fileID: 2126350271}
   - component: {fileID: 2126350272}
+  - component: {fileID: 2126350271}
   m_Layer: 0
   m_Name: Tracker2
   m_TagString: GameController
@@ -3152,6 +3172,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 26d36c45bf9b43a4fa08268150a1fc46, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  OSC_Prefix: /tracker2
+  MinimumUpdateInterval: 1
   Input1:
     m_UseReference: 0
     m_Action:
@@ -3269,8 +3291,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfcdb879d8850bf499c6a7aff57c5e22, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Prefix: /tracked_device/tracker2
-  MinimumUpdateInterval: 1
+  OSC_Prefix: /tracker2
 --- !u!114 &2126350273
 MonoBehaviour:
   m_ObjectHideFlags: 0
