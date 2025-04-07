@@ -1,0 +1,5 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <ui:VisualElement name="UI" style="flex-grow: 1; align-self: flex-end; flex-direction: row; align-items: stretch; justify-content: flex-start; width: 33%; align-content: stretch;">
+        <ui:Foldout text="Foldout" style="align-self: stretch; align-content: flex-start; align-items: stretch; width: auto; justify-content: space-between;" />
+    </ui:VisualElement>
+</ui:UXML>
