@@ -26,7 +26,7 @@ public class XBeeManager : MonoBehaviour
 	public int         DiscoveryTimeout = 10000;
 
 	[Header("Serial Connection")]
-	public string    COM_Port       = "COM13";
+	public string    COM_Port       = "COM1";
 	public int       Baudrate       = 57600;
 	public StopBits  StopBits       = StopBits.None;
 	public Parity    Parity         = Parity.None;
@@ -47,7 +47,6 @@ public class XBeeManager : MonoBehaviour
 			{ "level", "Info" }
 		};
 
-		Debug.Log(JsonUtility.ToJson(config));
 		LogManager.Configure(config);
 
 		SerialPortParameters serialParams = new SerialPortParameters(Baudrate, 8, StopBits, Parity, Handshake);
