@@ -947,8 +947,9 @@ MonoBehaviour:
   portIncoming: 57111
   portOutgoing: 57110
   startClientList:
-  - 127.0.0.1
+  - 10.10.1.110
   - 156.62.171.39
+  - 127.0.0.1
   DistributeData: 0
   debugDataStream: 0
 --- !u!114 &408442343
@@ -972,6 +973,7 @@ MonoBehaviour:
   Handshake: 2
   ReceiveTimeout: 100
   OSC_Prefix: /
+  MinimumUpdateInterval: 1
 --- !u!1 &459642985
 GameObject:
   m_ObjectHideFlags: 0
