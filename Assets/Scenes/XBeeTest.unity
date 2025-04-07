@@ -251,6 +251,8 @@ MonoBehaviour:
   Parity: 0
   Handshake: 0
   ReceiveTimeout: 1000
+  OSC_Prefix: /
+  MinimumUpdateInterval: 1
 --- !u!1 &459642985
 GameObject:
   m_ObjectHideFlags: 0
