@@ -17,8 +17,8 @@ using XBeeLibrary.Windows.Connection.Serial;
 public class XBeeManager : MonoBehaviour
 {
 	public enum EDeviceType {
-		[InspectorName("XBee (v1)")]   XBee,
-		[InspectorName("ZigBee (v2)")] ZigBee 
+		[InspectorName("XBee (v1)")]     XBee,
+		[InspectorName("ZigBee (v2/3)")] ZigBee 
 	};
 
 	[Header("Device")]
