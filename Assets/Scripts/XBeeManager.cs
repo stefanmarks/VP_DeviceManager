@@ -11,19 +11,23 @@ using XBeeLibrary.Core;
 using XBeeLibrary.Core.Events;
 using XBeeLibrary.Core.IO;
 using XBeeLibrary.Core.Models;
+using XBeeLibrary.Core.Packet.Common;
 using XBeeLibrary.Windows.Connection.Serial;
 
 [AddComponentMenu("VP/XBee Manager")]
 public class XBeeManager : MonoBehaviour
 {
 	public enum EDeviceType {
-		[InspectorName("XBee (v1)")]     XBee,
-		[InspectorName("ZigBee (v2/3)")] ZigBee 
+		[InspectorName("XBee v1")] XBee1,
+		[InspectorName("XBee v2")] XBee2,
+		[InspectorName("XBee v3")] XBee3
 	};
 
 	[Header("Device")]
-	public EDeviceType DeviceType       = EDeviceType.XBee;
-	public int         DiscoveryTimeout = 10000;
+	public EDeviceType DeviceType       = EDeviceType.XBee3;
+	[Tooltip("XBee node discovery timeout in [s]")]
+	[Min(0)]
+	public float       DiscoveryTimeout = 10;
 
 	[Header("Serial Connection")]
 	public string    COM_Port       = "COM1";
@@ -31,10 +35,14 @@ public class XBeeManager : MonoBehaviour
 	public StopBits  StopBits       = StopBits.None;
 	public Parity    Parity         = Parity.None;
 	public Handshake Handshake      = Handshake.None;
+	[Tooltip("Serial communication receive timeout in [ms]")]
+	[Min(1)]
 	public int       ReceiveTimeout = 100;
 
 	[Header("OSC")]
 	public string OSC_Prefix            = "/";
+	[Tooltip("Minimum OSC variable update interval in [s]")]
+	[Min(0)]
 	public float  MinimumUpdateInterval = 1.0f;
 
 
@@ -79,18 +87,25 @@ public class XBeeManager : MonoBehaviour
 
 			switch (DeviceType)
 			{
-				case EDeviceType.XBee   : m_device = new Raw802Device(m_serialPort); break;
-				case EDeviceType.ZigBee : m_device = new ZigBeeDevice(m_serialPort); break;
+				case EDeviceType.XBee1 : m_device = new Raw802Device(m_serialPort); break;
+				case EDeviceType.XBee2 : // fallthrough
+				case EDeviceType.XBee3 : m_device = new ZigBeeDevice(m_serialPort); break;
 			}
 			
 			m_device.Open();
 			Debug.Log($"Opened XBee Coordinator {DeviceInfo(m_device)}");
 
 			m_device.IOSampleReceived += OnIOSampleReceived;
-
 			Debug.Log("Starting XBee network discovery");
+
+			if (DeviceType == EDeviceType.XBee3)
+			{
+				// XBee3: open Join Window by virtually pushing the commissioning button twice
+				m_device.SendPacketAsync(new ATCommandPacket(m_device.GetNextFrameID(), "CB", "2"));
+			}
+
 			m_network = m_device.GetNetwork();
-			m_network.SetDiscoveryTimeout(DiscoveryTimeout);
+			m_network.SetDiscoveryTimeout((long) (DiscoveryTimeout * 1000.0));
 			m_network.DeviceDiscovered += OnDeviceDiscovered;
 			m_network.StartNodeDiscoveryProcess();
 		}
