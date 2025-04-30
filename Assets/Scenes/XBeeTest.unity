@@ -246,11 +246,11 @@ MonoBehaviour:
   DeviceType: 2
   DiscoveryTimeout: 10
   COM_Port: COM4
-  Baudrate: 57600
+  Baudrate: 115200
   StopBits: 1
   Parity: 0
-  Handshake: 0
-  ReceiveTimeout: 1000
+  Handshake: 2
+  ReceiveTimeout: 100
   OSC_Prefix: /
   MinimumUpdateInterval: 1
 --- !u!1 &459642985

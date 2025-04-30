@@ -964,10 +964,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98265fa89d4c21f4c9732396b5277d97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DeviceType: 1
-  DiscoveryTimeout: 10000
+  DeviceType: 2
+  DiscoveryTimeout: 10
   COM_Port: COM7
-  Baudrate: 57600
+  Baudrate: 115200
   StopBits: 1
   Parity: 0
   Handshake: 2
