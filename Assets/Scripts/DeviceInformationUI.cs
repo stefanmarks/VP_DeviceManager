@@ -16,7 +16,7 @@ public class DebugInformation : MonoBehaviour
 	public float      InformationUpdateInterval = 0.1f;
 
 
-	public void Start()
+	public void Awake()
 	{
 		if (Text == null)
 		{
@@ -25,24 +25,36 @@ public class DebugInformation : MonoBehaviour
 		
 		m_managers = new List<IDeviceManager>();
 		m_devices  = new List<IDevice>();
-
+	}
+	
+	
+	public void OnEnable()
+	{
 		IDeviceManager manager = (Device != null) ? Device.GetComponent<IDeviceManager>() : null;
 		if (manager != null)
 		{
+			m_managers.Clear();
 			m_managers.Add(manager);
 		}
 		else
 		{
-			StartCoroutine(GatherInformationSources());
+			StartCoroutine(GatherDeviceManagers());
 		}
 
 		StartCoroutine(UpdateInformation());
 	}
 
 
+	public void OnDisable()
+	{
+		StopCoroutine(GatherDeviceManagers());
+		StopCoroutine(UpdateInformation());
+	}
+
+
 	public void Update()
 	{
-
+		// empty
 	}
 
 
@@ -51,12 +63,14 @@ public class DebugInformation : MonoBehaviour
 		while (true)
 		{
 			yield return new WaitForSeconds(InformationUpdateInterval);
-			StringBuilder sb = new StringBuilder();
+
 			m_devices.Clear();
 			foreach (var manager in m_managers)
 			{
 				manager.GetDevices(m_devices);
 			}
+
+			StringBuilder sb = new StringBuilder();
 			foreach (var device in m_devices)
 			{
 				sb.Append(device.GetDeviceName()).Append(":").AppendLine();
@@ -67,7 +81,7 @@ public class DebugInformation : MonoBehaviour
 	}
 
 
-	protected IEnumerator GatherInformationSources()
+	protected IEnumerator GatherDeviceManagers()
 	{
 		while (true)
 		{
@@ -75,11 +89,6 @@ public class DebugInformation : MonoBehaviour
 			var managers = FindObjectsByType<MonoBehaviour>(FindObjectsSortMode.None).OfType<IDeviceManager>();
 			m_managers.Clear();
 			m_managers.AddRange(managers);
-			m_devices.Clear();
-			foreach(var manager in m_managers)
-			{
-				manager.GetDevices(m_devices);
-			}
 		}
 	}
 

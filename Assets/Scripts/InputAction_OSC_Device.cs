@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.XR;
+using UnityEngine.Serialization;
 
 [AddComponentMenu("VP/InputAction OSC Device")]
 public class InputAction_Device : MonoBehaviour, IOSCVariableContainer
@@ -22,8 +23,10 @@ public class InputAction_Device : MonoBehaviour, IOSCVariableContainer
 	public bool Input4On;
 
 	[Header("Outputs")]
-	public bool OutputOn;
-	public InputActionProperty Output;
+	[FormerlySerializedAs("OutputOn")]
+	public bool Output1On;
+	[FormerlySerializedAs("Output")]
+	public InputActionProperty Output1;
 
 
 	public void Start()
@@ -32,18 +35,18 @@ public class InputAction_Device : MonoBehaviour, IOSCVariableContainer
 		Input2.action?.Enable();
 		Input3.action?.Enable();
 		Input4.action?.Enable();
-		Output.action?.Enable();
+		Output1.action?.Enable();
 
-		m_input1 = new OSC_BoolVariable(OSC_Prefix + "/input1");
-		m_input2 = new OSC_BoolVariable(OSC_Prefix + "/input2");
-		m_input3 = new OSC_BoolVariable(OSC_Prefix + "/input3");
-		m_input4 = new OSC_BoolVariable(OSC_Prefix + "/input4");
-		m_output = new OSC_BoolVariable(OSC_Prefix + "/output");
+		m_input1  = new OSC_BoolVariable(OSC_Prefix + "/input1");
+		m_input2  = new OSC_BoolVariable(OSC_Prefix + "/input2");
+		m_input3  = new OSC_BoolVariable(OSC_Prefix + "/input3");
+		m_input4  = new OSC_BoolVariable(OSC_Prefix + "/input4");
+		m_output1 = new OSC_BoolVariable(OSC_Prefix + "/output1");
 		
 		m_nextOSCUpdate = 0;
 
 		m_oscVariables = new List<OSC_Variable> {
-			m_input1, m_input2, m_input3, m_input4, m_output
+			m_input1, m_input2, m_input3, m_input4, m_output1
 		};
 	}
 
@@ -55,9 +58,9 @@ public class InputAction_Device : MonoBehaviour, IOSCVariableContainer
 		Input3On = Input3.action.inProgress;
 		Input4On = Input4.action.inProgress;
 
-		if (OutputOn)
+		if (Output1On)
 		{
-			var controls = Output.action?.controls;
+			var controls = Output1.action?.controls;
 			if (controls != null)
 			{
 				foreach (var control in controls)
@@ -69,7 +72,7 @@ public class InputAction_Device : MonoBehaviour, IOSCVariableContainer
 					}
 				}
 			}
-			OutputOn = false;
+			Output1On = false;
 		}
 
 		m_nextOSCUpdate -= Time.unscaledDeltaTime;
@@ -84,7 +87,7 @@ public class InputAction_Device : MonoBehaviour, IOSCVariableContainer
 		{
 			foreach (var v in m_oscVariables)
 			{
-				if (v != m_output) { v.SendUpdate(); }
+				if (v != m_output1) { v.SendUpdate(); }
 			}
 			m_nextOSCUpdate = MinimumUpdateInterval;
 		}
@@ -98,7 +101,7 @@ public class InputAction_Device : MonoBehaviour, IOSCVariableContainer
 
 
 	protected OSC_BoolVariable   m_input1, m_input2, m_input3, m_input4;
-	protected OSC_BoolVariable   m_output;
+	protected OSC_BoolVariable   m_output1;
 	protected List<OSC_Variable> m_oscVariables;
 	protected double             m_nextOSCUpdate;
 }

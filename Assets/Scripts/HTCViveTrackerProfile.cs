@@ -284,7 +284,6 @@ namespace UnityEngine.XR.OpenXR.Features.Interactions
 				haptic = GetChildControl<HapticControl>("haptic");
 
 				var deviceDescriptor = XRDeviceDescriptor.FromJson(description.capabilities);
-				Debug.Log(description.capabilities.ToString());
 
 				if ((deviceDescriptor.characteristics & (InputDeviceCharacteristics)InputDeviceTrackerCharacteristics.TrackerLeftFoot) != 0)
 					InputSystem.InputSystem.SetDeviceUsage(this, "Left Foot");

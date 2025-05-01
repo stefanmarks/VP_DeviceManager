@@ -1004,7 +1004,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   DeviceType: 2
   DiscoveryTimeout: 10
-  COM_Port: COM4
+  COM_Port: COM10
   Baudrate: 115200
   StopBits: 1
   Parity: 0
@@ -1526,7 +1526,7 @@ MonoBehaviour:
         m_Flags: 0
       m_Flags: 0
     m_Reference: {fileID: 0}
-  Input2On: 0
+  Input2On: 1
   Input3:
     m_UseReference: 0
     m_Action:
@@ -1536,7 +1536,15 @@ MonoBehaviour:
       m_Id: 7d0f5fbb-cd28-4d1a-9239-104e726c32fb
       m_Processors: 
       m_Interactions: 
-      m_SingletonActionBindings: []
+      m_SingletonActionBindings:
+      - m_Name: 
+        m_Id: 18a77830-d274-48ac-861e-68edffe591fb
+        m_Path: <ViveController>{LeftHand}/trackpadClicked
+        m_Interactions: 
+        m_Processors: 
+        m_Groups: 
+        m_Action: Input 3
+        m_Flags: 0
       m_Flags: 0
     m_Reference: {fileID: 0}
   Input3On: 0
@@ -1549,12 +1557,20 @@ MonoBehaviour:
       m_Id: 40989c61-dbdf-4c93-a7ca-e16d744baecc
       m_Processors: 
       m_Interactions: 
-      m_SingletonActionBindings: []
+      m_SingletonActionBindings:
+      - m_Name: 
+        m_Id: cb4185d5-aeee-4b1f-aa36-9e15cc3c4a65
+        m_Path: <ViveController>{LeftHand}/menu
+        m_Interactions: 
+        m_Processors: 
+        m_Groups: 
+        m_Action: Input 4
+        m_Flags: 0
       m_Flags: 0
     m_Reference: {fileID: 0}
   Input4On: 0
-  OutputOn: 0
-  Output:
+  Output1On: 0
+  Output1:
     m_UseReference: 0
     m_Action:
       m_Name: Output
@@ -1798,7 +1814,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1096335402}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 16bf6189175a7e94a98b46606191e594, type: 3}
   m_Name: 
@@ -2122,7 +2138,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1625529272}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 16bf6189175a7e94a98b46606191e594, type: 3}
   m_Name: 
@@ -3059,7 +3075,15 @@ MonoBehaviour:
       m_Id: 59c64b7a-d845-4373-98a5-d87044ec6421
       m_Processors: 
       m_Interactions: 
-      m_SingletonActionBindings: []
+      m_SingletonActionBindings:
+      - m_Name: 
+        m_Id: 1d50f969-48f9-4716-a39c-86233023640d
+        m_Path: <ViveController>{RightHand}/trackpadClicked
+        m_Interactions: 
+        m_Processors: 
+        m_Groups: 
+        m_Action: Input 3
+        m_Flags: 0
       m_Flags: 0
     m_Reference: {fileID: 0}
   Input3On: 0
@@ -3072,12 +3096,20 @@ MonoBehaviour:
       m_Id: b2b5c1bc-e41a-4ed1-8e48-f942f227f628
       m_Processors: 
       m_Interactions: 
-      m_SingletonActionBindings: []
+      m_SingletonActionBindings:
+      - m_Name: 
+        m_Id: d456168c-e8ca-47d7-9f70-b7466408f3af
+        m_Path: <ViveController>{RightHand}/menu
+        m_Interactions: 
+        m_Processors: 
+        m_Groups: 
+        m_Action: Input 4
+        m_Flags: 0
       m_Flags: 0
     m_Reference: {fileID: 0}
   Input4On: 0
-  OutputOn: 0
-  Output:
+  Output1On: 0
+  Output1:
     m_UseReference: 0
     m_Action:
       m_Name: Output
@@ -3359,8 +3391,8 @@ MonoBehaviour:
       m_Flags: 0
     m_Reference: {fileID: 0}
   Input4On: 0
-  OutputOn: 0
-  Output:
+  Output1On: 0
+  Output1:
     m_UseReference: 0
     m_Action:
       m_Name: Output
@@ -3688,8 +3720,8 @@ MonoBehaviour:
       m_Flags: 0
     m_Reference: {fileID: 0}
   Input4On: 0
-  OutputOn: 0
-  Output:
+  Output1On: 0
+  Output1:
     m_UseReference: 0
     m_Action:
       m_Name: Output
