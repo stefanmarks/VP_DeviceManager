@@ -301,9 +301,16 @@ namespace XBeeLibrary.Windows.Connection.Serial
 			while ((serialPort != null) && serialPort.IsOpen)
 			{
 				Thread.Sleep(1);
-				if ((serialPort != null) && serialPort.IsOpen && (serialPort.BytesToRead >= 1))
+				try
 				{
-					SerialPortDataReceived(this, null);
+					if ((serialPort != null) && serialPort.IsOpen && (serialPort.BytesToRead >= 1))
+					{
+						SerialPortDataReceived(this, null);
+					}
+				}
+				catch (System.IO.IOException)
+				{
+					// ignore
 				}
 			}
 		}
