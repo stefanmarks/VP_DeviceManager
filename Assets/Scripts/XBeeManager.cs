@@ -1,4 +1,4 @@
-using Common.Logging;
+﻿using Common.Logging;
 using Common.Logging.Configuration;
 using SentienceLab.OSC;
 using System;
@@ -15,7 +15,7 @@ using XBeeLibrary.Core.Packet.Common;
 using XBeeLibrary.Windows.Connection.Serial;
 
 [AddComponentMenu("VP/XBee Manager")]
-public class XBeeManager : MonoBehaviour
+public class XBeeManager : MonoBehaviour, IDeviceManager
 {
 	public enum EDeviceType {
 		[InspectorName("XBee v1")] XBee1,
@@ -25,13 +25,14 @@ public class XBeeManager : MonoBehaviour
 
 	[Header("Device")]
 	public EDeviceType DeviceType       = EDeviceType.XBee3;
+
 	[Tooltip("XBee node discovery timeout in [s]")]
 	[Min(0)]
 	public float       DiscoveryTimeout = 10;
 
 	[Header("Serial Connection")]
 	public string    COM_Port       = "COM1";
-	public int       Baudrate       = 57600;
+	public int       Baudrate       = 115200;
 	public StopBits  StopBits       = StopBits.None;
 	public Parity    Parity         = Parity.None;
 	public Handshake Handshake      = Handshake.None;
@@ -59,11 +60,10 @@ public class XBeeManager : MonoBehaviour
 
 		SerialPortParameters serialParams = new SerialPortParameters(Baudrate, 8, StopBits, Parity, Handshake);
 		m_serialPort = new WinSerialPort(COM_Port, serialParams, ReceiveTimeout);
-		m_device     = null;
+		m_coordinator     = null;
 
-		m_remoteDevices = new Dictionary<XBee64BitAddress, RemoteXBeeDevice>();
-		m_newDevices    = new List<RemoteXBeeDevice>();
-		m_oscVariables  = new Dictionary<string, OSC_BoolVariable>();
+		m_remoteDevices = new Dictionary<XBee64BitAddress, XBee>();
+		m_newDevices    = new List<XBee>();
 		m_nextIO_Update = 0;
 
 		StartCoroutine(OpenCoordinator());
@@ -72,9 +72,9 @@ public class XBeeManager : MonoBehaviour
 
 	public void OnDestroy()
 	{
-		if ((m_device != null) && m_device.IsOpen)
+		if ((m_coordinator != null) && m_coordinator.IsOpen)
 		{
-			m_device.Close();
+			m_coordinator.Close();
 		}
 	}
 
@@ -87,24 +87,24 @@ public class XBeeManager : MonoBehaviour
 
 			switch (DeviceType)
 			{
-				case EDeviceType.XBee1 : m_device = new Raw802Device(m_serialPort); break;
+				case EDeviceType.XBee1 : m_coordinator = new Raw802Device(m_serialPort); break;
 				case EDeviceType.XBee2 : // fallthrough
-				case EDeviceType.XBee3 : m_device = new ZigBeeDevice(m_serialPort); break;
+				case EDeviceType.XBee3 : m_coordinator = new ZigBeeDevice(m_serialPort); break;
 			}
 			
-			m_device.Open();
-			Debug.Log($"Opened XBee Coordinator {DeviceInfo(m_device)}");
+			m_coordinator.Open();
+			Debug.Log($"Opened XBee Coordinator {DeviceInfo(m_coordinator)}");
 
-			m_device.IOSampleReceived += OnIOSampleReceived;
+			m_coordinator.IOSampleReceived += OnIOSampleReceived;
 			Debug.Log("Starting XBee network discovery");
 
 			if (DeviceType == EDeviceType.XBee3)
 			{
 				// XBee3: open Join Window by virtually pushing the commissioning button twice
-				m_device.SendPacketAsync(new ATCommandPacket(m_device.GetNextFrameID(), "CB", "2"));
+				m_coordinator.SendPacketAsync(new ATCommandPacket(m_coordinator.GetNextFrameID(), "CB", "2"));
 			}
 
-			m_network = m_device.GetNetwork();
+			m_network = m_coordinator.GetNetwork();
 			m_network.SetDiscoveryTimeout((long) (DiscoveryTimeout * 1000.0));
 			m_network.DeviceDiscovered += OnDeviceDiscovered;
 			m_network.StartNodeDiscoveryProcess();
@@ -134,15 +134,15 @@ public class XBeeManager : MonoBehaviour
 		{
 			MaintainRemoteDevices(device);
 
-			StringBuilder sb = new StringBuilder();
-			sb.Append("IO Sample from ").Append(DeviceInfo(device)).Append(":");
-			foreach (var kv in args.IOSample.DigitalValues)
-			{
-				sb.Append($"\n- {kv.Key}={kv.Value}");
-			}
-			Debug.Log(sb);
+			//StringBuilder sb = new StringBuilder();
+			//sb.Append("IO Sample from ").Append(DeviceInfo(device)).Append(":");
+			//foreach (var kv in args.IOSample.DigitalValues)
+			//{
+			//	sb.Append($"\n- {kv.Key}={kv.Value}");
+			//}
+			//Debug.Log(sb);
 
-			UpdateOSC_Variables(device, args.IOSample);
+			ProcessIOSample(device, args.IOSample);
 		}
 	}
 
@@ -160,33 +160,161 @@ public class XBeeManager : MonoBehaviour
 		if (!m_remoteDevices.ContainsKey(device.XBee64BitAddr))
 		{
 			Debug.Log($"Found new {DeviceInfo(device)}");
-			m_remoteDevices[device.XBee64BitAddr] = device;
-			m_newDevices.Add(device);
+			XBee xbee = new XBee(this, device);
+			m_remoteDevices[device.XBee64BitAddr] = xbee;
+			m_newDevices.Add(xbee);
 		}
 	}
 
-	protected IEnumerator ReadDeviceStatus(RemoteXBeeDevice device)
+
+	public void ProcessIOSample(AbstractXBeeDevice device, IOSample sample)
 	{
-		yield return new WaitForSeconds(0.1f);
+		if ((device.NodeID == null) || (device.NodeID.Length == 0)) return;
 
-		if ((device.NodeID == null) || (device.NodeID.Length == 0))
+		if (m_remoteDevices.TryGetValue(device.XBee64BitAddr, out XBee xbee))
 		{
-			Debug.Log($"Reading info of {DeviceInfo(device)}");
-			device.ReadDeviceInfo();
+			xbee.ProcessIOSample(sample);
 		}
-
-		Debug.Log($"Reading IO state of {DeviceInfo(device)}");
-		IOSample ioSample = device.ReadIOSample();
-		UpdateOSC_Variables(device, ioSample);
-		StringBuilder sb = new StringBuilder();
-		foreach (var kv in ioSample.DigitalValues)
-		{
-			sb.Append($"\n- {kv.Key}={kv.Value}");
-		}
-		Debug.Log(sb);
 	}
 
-	protected string DeviceInfo(AbstractXBeeDevice device)
+
+	public void Update()
+	{
+		// query new devices
+		if (m_newDevices.Count > 0)
+		{
+			foreach (var device in m_newDevices) 
+			{
+				device.ReadDeviceStatus();
+			}
+			m_newDevices.Clear();
+		}
+
+		// force send IO updates in intervals
+		m_nextIO_Update -= Time.deltaTime;
+		bool doUpdate = m_nextIO_Update <= 0;
+		if (doUpdate)
+		{
+			foreach (var kv in m_remoteDevices)
+			{
+				kv.Value.SendUpdate();
+			}
+			m_nextIO_Update = MinimumUpdateInterval;
+		}
+	}
+
+
+	public void GetDevices(List<IDevice> devices)
+	{
+		devices.AddRange(m_remoteDevices.Values);
+	}
+
+
+	protected class XBee : IDevice
+	{
+		public XBee(XBeeManager manager, RemoteXBeeDevice device)
+		{
+			m_manager = manager;
+			m_device  = device;
+			m_oscVariables = new Dictionary<string, OSC_BoolVariable>();
+		}
+
+
+		public void ReadDeviceStatus()
+		{
+			m_manager.StartCoroutine(CR_ReadDeviceStatus());
+		}
+
+
+		protected IEnumerator CR_ReadDeviceStatus()
+		{
+			yield return new WaitForSeconds(0.1f);
+
+			if ((m_device.NodeID == null) || (m_device.NodeID.Length == 0))
+			{
+				// Debug.Log($"Reading info of {DeviceInfo(m_device)}");
+				m_device.ReadDeviceInfo();
+			}
+
+			//Debug.Log($"Reading IO state of {DeviceInfo(m_device)}");
+			IOSample ioSample = m_device.ReadIOSample();
+			ProcessIOSample(ioSample);
+			//StringBuilder sb = new StringBuilder();
+			//foreach (var kv in ioSample.DigitalValues)
+			//{
+			//	sb.Append($"\n- {kv.Key}={kv.Value}");
+			//}
+			//Debug.Log(sb);
+		}
+
+
+		public void ProcessIOSample(IOSample sample)
+		{
+			if ((m_device.NodeID == null) || (m_device.NodeID.Length == 0)) return;
+
+			string prefix = m_device.NodeID.ToLower().Replace(" ", "_");
+			foreach (var kv in sample.DigitalValues)
+			{
+				string varName = kv.Key.GetName().ToLower();
+
+				// cut analog name part (if exists)
+				int analogNameStartIdx = varName.IndexOf("/ad");
+				if (analogNameStartIdx >= 0)
+				{
+					varName = varName.Substring(0, analogNameStartIdx);
+				}
+
+				// build full name
+				varName = m_manager.OSC_Prefix + prefix + "/" + varName.Replace("dio", "input"); ;
+
+				// search or create OSC variable
+				if (!m_oscVariables.TryGetValue(varName, out OSC_BoolVariable oscVar))
+				{
+					oscVar = new OSC_BoolVariable(varName);
+					m_oscVariables.Add(varName, oscVar);
+				}
+
+				// set new value
+				bool newValue = kv.Value == IOValue.LOW;
+				if (oscVar.Value != newValue)
+				{
+					oscVar.Value = newValue;
+					oscVar.SendUpdate();
+				}
+			}
+		}
+
+
+		public void SendUpdate()
+		{
+			foreach (var kv in m_oscVariables)
+			{
+				kv.Value.SendUpdate();
+			}
+		}
+
+
+		public string GetDeviceName()
+		{
+			return m_device.NodeID;
+		}
+
+
+		public void GetDeviceInformation(StringBuilder sb)
+		{
+			foreach (var kv in m_oscVariables)
+			{
+				sb.Append(kv.Key).Append(": ").Append(kv.Value.Value ? "■" : "□").AppendLine();
+			}
+		}
+
+		protected XBeeManager                          m_manager;
+		protected RemoteXBeeDevice                     m_device;
+		protected Dictionary<string, OSC_BoolVariable> m_oscVariables;
+	}
+
+
+	protected static string DeviceInfo(AbstractXBeeDevice device)
 	{
 		StringBuilder sb = new StringBuilder(device.GetType().Name);
 		sb.Append(" ");
@@ -198,76 +326,13 @@ public class XBeeManager : MonoBehaviour
 		return sb.ToString();
 	}
 
-	public void UpdateOSC_Variables(AbstractXBeeDevice device, IOSample sample)
-	{
-		if ((device.NodeID == null) || (device.NodeID.Length == 0)) return;
-
-		string prefix = device.NodeID.ToLower().Replace(" ", "_");
-		foreach (var kv in sample.DigitalValues)
-		{
-			string varName = kv.Key.GetName().ToLower();
-			
-			// cut analog name part (if exists)
-			int analogNameStartIdx = varName.IndexOf("/ad");
-			if (analogNameStartIdx >= 0)
-			{
-				varName = varName.Substring(0, analogNameStartIdx);
-			}
-
-			// build full name
-			varName = OSC_Prefix + prefix + "/" + varName.Replace("dio", "input"); ;
-			
-			// search or create OSC variable
-			OSC_BoolVariable oscVar = null;
-			if (!m_oscVariables.TryGetValue(varName, out oscVar))
-			{
-				oscVar = new OSC_BoolVariable(varName);
-				m_oscVariables.Add(varName, oscVar);
-			}
-
-			// set new value
-			bool newValue = kv.Value == IOValue.LOW;
-			if (oscVar.Value != newValue)
-			{
-				oscVar.Value = newValue;
-				oscVar.SendUpdate();
-			}
-		}
-	}
-
-	public void Update()
-	{
-		// query new devices
-		if (m_newDevices.Count > 0)
-		{
-			foreach (var device in m_newDevices) 
-			{
-				StartCoroutine(ReadDeviceStatus(device));
-			}
-			m_newDevices.Clear();
-		}
-
-		// force send IO updates in intervals
-		m_nextIO_Update -= Time.deltaTime;
-		bool doUpdate = m_nextIO_Update <= 0;
-		if (doUpdate)
-		{
-			foreach (var kv in m_oscVariables)
-			{
-				kv.Value.SendUpdate();
-			}
-			m_nextIO_Update = MinimumUpdateInterval;
-		}
-	}
-
 
 	protected WinSerialPort m_serialPort;
-	protected XBeeDevice    m_device;
+	protected XBeeDevice    m_coordinator;
 	protected XBeeNetwork   m_network;
 
-	protected List<RemoteXBeeDevice> m_newDevices;
+	protected double        m_nextIO_Update;
 
-	protected Dictionary<XBee64BitAddress, RemoteXBeeDevice> m_remoteDevices;
-	protected Dictionary<string, OSC_BoolVariable>           m_oscVariables;
-	protected double                                         m_nextIO_Update;
+	protected Dictionary<XBee64BitAddress, XBee> m_remoteDevices;
+	protected List<XBee>                         m_newDevices;
 }

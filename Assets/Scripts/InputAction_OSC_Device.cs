@@ -1,4 +1,4 @@
-using SentienceLab.OSC;
+﻿using SentienceLab.OSC;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -7,9 +7,11 @@ using UnityEngine.InputSystem.XR;
 [AddComponentMenu("VP/InputAction OSC Device")]
 public class InputAction_Device : MonoBehaviour, IOSCVariableContainer
 {
+	[Header("OSC")]
 	public string OSC_Prefix            = "/io_device";
 	public float  MinimumUpdateInterval = 1.0f;
 
+	[Header("Inputs")]
 	public InputActionProperty Input1;
 	public bool Input1On;
 	public InputActionProperty Input2;
@@ -19,8 +21,9 @@ public class InputAction_Device : MonoBehaviour, IOSCVariableContainer
 	public InputActionProperty Input4;
 	public bool Input4On;
 
-	public InputActionProperty Output;
+	[Header("Outputs")]
 	public bool OutputOn;
+	public InputActionProperty Output;
 
 
 	public void Start()
@@ -37,7 +40,11 @@ public class InputAction_Device : MonoBehaviour, IOSCVariableContainer
 		m_input4 = new OSC_BoolVariable(OSC_Prefix + "/input4");
 		m_output = new OSC_BoolVariable(OSC_Prefix + "/output");
 		
-		m_nextIO_Update = 0;
+		m_nextOSCUpdate = 0;
+
+		m_oscVariables = new List<OSC_Variable> {
+			m_input1, m_input2, m_input3, m_input4, m_output
+		};
 	}
 
 
@@ -65,8 +72,8 @@ public class InputAction_Device : MonoBehaviour, IOSCVariableContainer
 			OutputOn = false;
 		}
 
-		m_nextIO_Update -= Time.deltaTime;
-		bool doUpdate = m_nextIO_Update <= 0;
+		m_nextOSCUpdate -= Time.unscaledDeltaTime;
+		bool doUpdate = m_nextOSCUpdate <= 0;
 
 		if (m_input1.Value != Input1On) { m_input1.Value = Input1On; doUpdate = true; }
 		if (m_input2.Value != Input2On) { m_input2.Value = Input2On; doUpdate = true; }
@@ -75,21 +82,23 @@ public class InputAction_Device : MonoBehaviour, IOSCVariableContainer
 
 		if (doUpdate)
 		{
-			m_input1.SendUpdate();
-			m_input2.SendUpdate();
-			m_input3.SendUpdate();
-			m_input4.SendUpdate();
-			m_nextIO_Update = MinimumUpdateInterval;
+			foreach (var v in m_oscVariables)
+			{
+				if (v != m_output) { v.SendUpdate(); }
+			}
+			m_nextOSCUpdate = MinimumUpdateInterval;
 		}
 	}
 
+
 	public List<OSC_Variable> GetOSC_Variables()
 	{
-		return new List<OSC_Variable> { m_output };
+		return m_oscVariables;
 	}
 
 
-	protected OSC_BoolVariable m_input1, m_input2, m_input3, m_input4;
-	protected OSC_BoolVariable m_output;
-	protected double           m_nextIO_Update;
+	protected OSC_BoolVariable   m_input1, m_input2, m_input3, m_input4;
+	protected OSC_BoolVariable   m_output;
+	protected List<OSC_Variable> m_oscVariables;
+	protected double             m_nextOSCUpdate;
 }
