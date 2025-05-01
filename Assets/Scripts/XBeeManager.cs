@@ -94,37 +94,50 @@ public class XBeeManager : MonoBehaviour, IDeviceManager
 			
 			m_coordinator.Open();
 			Debug.Log($"Opened XBee Coordinator {DeviceInfo(m_coordinator)}");
-
-			m_coordinator.IOSampleReceived += OnIOSampleReceived;
-			Debug.Log("Starting XBee network discovery");
-
-			if (DeviceType == EDeviceType.XBee3)
-			{
-				// XBee3: open Join Window by virtually pushing the commissioning button twice
-				m_coordinator.SendPacketAsync(new ATCommandPacket(m_coordinator.GetNextFrameID(), "CB", "2"));
-			}
-
-			m_network = m_coordinator.GetNetwork();
-			m_network.SetDiscoveryTimeout((long) (DiscoveryTimeout * 1000.0));
-			m_network.DeviceDiscovered += OnDeviceDiscovered;
-			m_network.StartNodeDiscoveryProcess();
 		}
 		catch (Exception e)
 		{
 			Debug.LogWarning($"Could not open XBee Coordinator ({e})");
 		}
 
-		if (m_network != null)
+		if (m_coordinator.IsOpen)
 		{
-			while (m_network.IsDiscoveryRunning)
+			m_coordinator.IOSampleReceived += OnIOSampleReceived;
+
+			if (DeviceType == EDeviceType.XBee3)
 			{
+				// XBee3: open Join Window by virtually pushing the commissioning button twice
+				var response = m_coordinator.SendPacket(new ATCommandPacket(m_coordinator.GetNextFrameID(), "CB", "2"));
+				if (response is ATCommandResponsePacket atResponse)
+				{
+					if (atResponse.Status == ATCommandStatus.OK)
+					{
+						Debug.Log("Opening join window");
+					}
+					else
+					{
+						Debug.LogWarning("Could not open join window");
+					}
+				}
 				yield return new WaitForSeconds(1);
 			}
 
-			Debug.Log("XBee network discovery ended");
-		}
+			Debug.Log("Starting XBee network discovery");
+			m_network = m_coordinator.GetNetwork();
+			m_network.SetDiscoveryTimeout((long)(DiscoveryTimeout * 1000.0));
+			m_network.DeviceDiscovered += OnDeviceDiscovered;
+			m_network.StartNodeDiscoveryProcess();
 
-		yield return null;
+			if (m_network != null)
+			{
+				while (m_network.IsDiscoveryRunning)
+				{
+					yield return new WaitForSeconds(1);
+				}
+
+				Debug.Log("XBee network discovery ended");
+			}
+		}
 	}
 
 	protected void OnIOSampleReceived(object sender, IOSampleReceivedEventArgs args)
