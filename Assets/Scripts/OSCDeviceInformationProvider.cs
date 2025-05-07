@@ -29,13 +29,13 @@ public class OSCDeviceInformationProvider : MonoBehaviour, IDeviceManager, IDevi
 	}
 
 
-	public void GetDeviceInformation(StringBuilder sb)
+	public void GetDeviceInformation(StringBuilder sb, string prefix)
 	{
 		foreach (var c in m_oscContainers)
 		{
 			foreach (var v in c.GetOSC_Variables())
 			{
-				sb.Append(v.Name).Append(": ");
+				sb.Append(prefix).Append(v.Name).Append(": ");
 				if      (v is OSC_BoolVariable     vb) { sb.Append(vb.Value ? "■" : "□"); }
 				else if (v is OSC_IntVariable      vi) { sb.Append(vi.Value); }
 				else if (v is OSC_FloatVariable    vf) { sb.Append(vf.Value); }

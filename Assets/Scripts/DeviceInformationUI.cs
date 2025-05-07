@@ -69,12 +69,13 @@ public class DebugInformation : MonoBehaviour
 			{
 				manager.GetDevices(m_devices);
 			}
+			m_devices.Sort(IDeviceComparer.INSTANCE);
 
 			StringBuilder sb = new StringBuilder();
 			foreach (var device in m_devices)
 			{
 				sb.Append(device.GetDeviceName()).Append(":").AppendLine();
-				device.GetDeviceInformation(sb);
+				device.GetDeviceInformation(sb, " - ");
 			}
 			Text.text = sb.ToString();
 		}

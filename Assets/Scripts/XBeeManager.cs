@@ -11,6 +11,7 @@ using XBeeLibrary.Core;
 using XBeeLibrary.Core.Events;
 using XBeeLibrary.Core.IO;
 using XBeeLibrary.Core.Models;
+using XBeeLibrary.Core.Packet.Common;
 using XBeeLibrary.Core.Utils;
 using XBeeLibrary.Windows.Connection.Serial;
 
@@ -27,7 +28,7 @@ public class XBeeManager : MonoBehaviour, IDeviceManager, IDevice
 	public EDeviceType DeviceType       = EDeviceType.XBee3;
 
 	[Tooltip("XBee node discovery timeout in [s]")]
-	[Min(1)]
+	[Range(1, 255)]
 	public float       DiscoveryTimeout = 60;
 
 	[Header("Serial Connection")]
@@ -104,43 +105,26 @@ public class XBeeManager : MonoBehaviour, IDeviceManager, IDevice
 		if (m_coordinator.IsInitialized)
 		{
 			m_coordinator.IOSampleReceived += OnIOSampleReceived;
-			/*
-			if (DeviceType == EDeviceType.XBee3)
-			{
-				// XBee3: open Join Window by virtually pushing the commissioning button twice
-				var response = m_coordinator.SendPacket(new ATCommandPacket(m_coordinator.GetNextFrameID(), "CB", "2"));
-				if (response is ATCommandResponsePacket atResponse)
-				{
-					if (atResponse.Status == ATCommandStatus.OK)
-					{
-						Debug.Log("Opening join window");
-					}
-					else
-					{
-						Debug.LogWarning("Could not open join window");
-					}
-				}
-				yield return new WaitForSeconds(1);
-			}
-			*/
+
 			Debug.Log("Starting XBee network discovery");
-			
+
 			if (DeviceType == EDeviceType.XBee3)
 			{
-				// change NodeJoinTime (in s)
-				m_coordinator.SetParameter("NJ", ByteUtils.LongToByteArray((long)(DiscoveryTimeout / 1.0f)));
+				// Open join window by writing NodeJoinTime (in s)
+				m_coordinator.SetParameter("NJ", new byte[] { (byte)(DiscoveryTimeout / 1.0f) });
 			}
 
 			m_network = m_coordinator.GetNetwork();
 			if (m_network != null)
 			{
-				m_network.SetDiscoveryTimeout((long)(DiscoveryTimeout * 1000.0f));
 				m_network.DeviceDiscovered += OnDeviceDiscovered;
 				m_network.StartNodeDiscoveryProcess();
 
-				while (m_network.IsDiscoveryRunning)
+				int discoveryTime = (int) DiscoveryTimeout;
+				while ((discoveryTime > 0) || m_network.IsDiscoveryRunning)
 				{
 					yield return new WaitForSeconds(1);
+					discoveryTime--;
 				}
 
 				Debug.Log("XBee network discovery ended");
@@ -231,11 +215,11 @@ public class XBeeManager : MonoBehaviour, IDeviceManager, IDevice
 	}
 
 
-	public void GetDeviceInformation(StringBuilder sb)
+	public void GetDeviceInformation(StringBuilder sb, string prefix)
 	{
-		sb.Append("COM Port: ").Append(COM_Port).AppendLine();
-		sb.Append("Baudrate: ").Append(Baudrate).AppendLine();
-		sb.Append("Name    : ").Append(m_coordinator.NodeID).AppendLine();
+		sb.Append(prefix).Append("Name: ").Append(m_coordinator.NodeID).AppendLine();
+		sb.Append(prefix).Append("COM Port: ").Append(COM_Port).AppendLine();
+		sb.Append(prefix).Append("Baudrate: ").Append(Baudrate).AppendLine();
 	}
 
 
@@ -339,11 +323,11 @@ public class XBeeManager : MonoBehaviour, IDeviceManager, IDevice
 		}
 
 
-		public void GetDeviceInformation(StringBuilder sb)
+		public void GetDeviceInformation(StringBuilder sb, string prefix)
 		{
 			foreach (var kv in m_oscVariables)
 			{
-				sb.Append(kv.Key).Append(": ").Append(kv.Value.Value ? "■" : "□").AppendLine();
+				sb.Append(prefix).Append(kv.Key).Append(": ").Append(kv.Value.Value ? "■" : "□").AppendLine();
 			}
 		}
 
