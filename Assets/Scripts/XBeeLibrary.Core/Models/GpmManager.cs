@@ -505,7 +505,7 @@ namespace XBeeLibrary.Core.Models
 				{
 					lock (gpmLock)
 					{
-						Monitor.Wait(gpmLock, Math.Max(timeout, AbstractXBeeDevice.DEFAULT_RECEIVE_TIMETOUT));
+						Monitor.Wait(gpmLock, Math.Max(timeout, AbstractXBeeDevice.DEFAULT_RECEIVE_TIMEOUT));
 					}
 				}
 

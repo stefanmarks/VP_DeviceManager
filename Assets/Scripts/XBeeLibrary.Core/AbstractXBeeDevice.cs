@@ -48,7 +48,7 @@ namespace XBeeLibrary.Core
 		/// Default receive timeout used to wait for a response in synchronous operations.
 		/// </summary>
 		/// <seealso cref="ReceiveTimeout"/>
-		internal const int DEFAULT_RECEIVE_TIMETOUT = 2000; // 2.0 seconds of timeout to receive packet and command responses.
+		internal const int DEFAULT_RECEIVE_TIMEOUT = 2000; // 2.0 seconds of timeout to receive packet and command responses.
 
 		/// <summary>
 		/// Timeout to wait before entering in command mode.
@@ -85,7 +85,7 @@ namespace XBeeLibrary.Core
 		protected DataReader dataReader = null;
 
 		protected byte currentFrameID = 0xFF;
-		protected int receiveTimeout = DEFAULT_RECEIVE_TIMETOUT;
+		protected int receiveTimeout = DEFAULT_RECEIVE_TIMEOUT;
 
 		protected AbstractXBeeDevice localXBeeDevice;
 
