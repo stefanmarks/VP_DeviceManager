@@ -11,11 +11,11 @@ using XBeeLibrary.Core;
 using XBeeLibrary.Core.Events;
 using XBeeLibrary.Core.IO;
 using XBeeLibrary.Core.Models;
-using XBeeLibrary.Core.Packet.Common;
+using XBeeLibrary.Core.Utils;
 using XBeeLibrary.Windows.Connection.Serial;
 
 [AddComponentMenu("VP/XBee Manager")]
-public class XBeeManager : MonoBehaviour, IDeviceManager
+public class XBeeManager : MonoBehaviour, IDeviceManager, IDevice
 {
 	public enum EDeviceType {
 		[InspectorName("XBee v1")] XBee1,
@@ -27,8 +27,8 @@ public class XBeeManager : MonoBehaviour, IDeviceManager
 	public EDeviceType DeviceType       = EDeviceType.XBee3;
 
 	[Tooltip("XBee node discovery timeout in [s]")]
-	[Min(0)]
-	public float       DiscoveryTimeout = 10;
+	[Min(1)]
+	public float       DiscoveryTimeout = 60;
 
 	[Header("Serial Connection")]
 	public string    COM_Port       = "COM1";
@@ -38,7 +38,7 @@ public class XBeeManager : MonoBehaviour, IDeviceManager
 	public Handshake Handshake      = Handshake.None;
 	[Tooltip("Serial communication receive timeout in [ms]")]
 	[Min(1)]
-	public int       ReceiveTimeout = 100;
+	public int       ReceiveTimeout = AbstractXBeeDevice.DEFAULT_RECEIVE_TIMEOUT;
 
 	[Header("OSC")]
 	public string OSC_Prefix            = "/";
@@ -59,8 +59,8 @@ public class XBeeManager : MonoBehaviour, IDeviceManager
 		LogManager.Configure(config);
 
 		SerialPortParameters serialParams = new SerialPortParameters(Baudrate, 8, StopBits, Parity, Handshake);
-		m_serialPort = new WinSerialPort(COM_Port, serialParams, ReceiveTimeout);
-		m_coordinator     = null;
+		m_serialPort  = new WinSerialPort(COM_Port, serialParams, ReceiveTimeout);
+		m_coordinator = null;
 
 		m_remoteDevices = new Dictionary<XBee64BitAddress, XBee>();
 		m_newDevices    = new List<XBee>();
@@ -91,8 +91,9 @@ public class XBeeManager : MonoBehaviour, IDeviceManager
 				case EDeviceType.XBee2 : // fallthrough
 				case EDeviceType.XBee3 : m_coordinator = new ZigBeeDevice(m_serialPort); break;
 			}
-			
+			m_coordinator.ReceiveTimeout = ReceiveTimeout;
 			m_coordinator.Open();
+
 			Debug.Log($"Opened XBee Coordinator {DeviceInfo(m_coordinator)}");
 		}
 		catch (Exception e)
@@ -100,10 +101,10 @@ public class XBeeManager : MonoBehaviour, IDeviceManager
 			Debug.LogWarning($"Could not open XBee Coordinator ({e})");
 		}
 
-		if (m_coordinator.IsOpen)
+		if (m_coordinator.IsInitialized)
 		{
 			m_coordinator.IOSampleReceived += OnIOSampleReceived;
-
+			/*
 			if (DeviceType == EDeviceType.XBee3)
 			{
 				// XBee3: open Join Window by virtually pushing the commissioning button twice
@@ -121,15 +122,22 @@ public class XBeeManager : MonoBehaviour, IDeviceManager
 				}
 				yield return new WaitForSeconds(1);
 			}
-
+			*/
 			Debug.Log("Starting XBee network discovery");
-			m_network = m_coordinator.GetNetwork();
-			m_network.SetDiscoveryTimeout((long)(DiscoveryTimeout * 1000.0));
-			m_network.DeviceDiscovered += OnDeviceDiscovered;
-			m_network.StartNodeDiscoveryProcess();
+			
+			if (DeviceType == EDeviceType.XBee3)
+			{
+				// change NodeJoinTime (in s)
+				m_coordinator.SetParameter("NJ", ByteUtils.LongToByteArray((long)(DiscoveryTimeout / 1.0f)));
+			}
 
+			m_network = m_coordinator.GetNetwork();
 			if (m_network != null)
 			{
+				m_network.SetDiscoveryTimeout((long)(DiscoveryTimeout * 1000.0f));
+				m_network.DeviceDiscovered += OnDeviceDiscovered;
+				m_network.StartNodeDiscoveryProcess();
+
 				while (m_network.IsDiscoveryRunning)
 				{
 					yield return new WaitForSeconds(1);
@@ -217,9 +225,27 @@ public class XBeeManager : MonoBehaviour, IDeviceManager
 	}
 
 
+	public string GetDeviceName()
+	{
+		return $"XBee Coordinator";
+	}
+
+
+	public void GetDeviceInformation(StringBuilder sb)
+	{
+		sb.Append("COM Port: ").Append(COM_Port).AppendLine();
+		sb.Append("Baudrate: ").Append(Baudrate).AppendLine();
+		sb.Append("Name    : ").Append(m_coordinator.NodeID).AppendLine();
+	}
+
+
 	public void GetDevices(List<IDevice> devices)
 	{
-		devices.AddRange(m_remoteDevices.Values);
+		if ((m_coordinator != null) && (m_coordinator.IsInitialized))
+		{
+			devices.Add(this);
+			devices.AddRange(m_remoteDevices.Values);
+		}
 	}
 
 
