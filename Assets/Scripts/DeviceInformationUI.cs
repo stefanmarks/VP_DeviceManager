@@ -69,7 +69,7 @@ public class DebugInformation : MonoBehaviour
 			{
 				manager.GetDevices(m_devices);
 			}
-			m_devices.Sort(IDeviceComparer.INSTANCE);
+			m_devices.Sort(IDeviceComparer.Instance);
 
 			StringBuilder sb = new StringBuilder();
 			foreach (var device in m_devices)

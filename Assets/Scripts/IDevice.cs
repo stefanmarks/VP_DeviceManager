@@ -14,5 +14,5 @@ public class IDeviceComparer : IComparer<IDevice>
 		return string.Compare(x.GetDeviceName(), y.GetDeviceName());
 	}
 
-	public static readonly IDeviceComparer INSTANCE = new IDeviceComparer();
+	public static readonly IDeviceComparer Instance = new IDeviceComparer();
 }
