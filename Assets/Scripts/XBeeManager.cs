@@ -11,8 +11,6 @@ using XBeeLibrary.Core;
 using XBeeLibrary.Core.Events;
 using XBeeLibrary.Core.IO;
 using XBeeLibrary.Core.Models;
-using XBeeLibrary.Core.Packet.Common;
-using XBeeLibrary.Core.Utils;
 using XBeeLibrary.Windows.Connection.Serial;
 
 [AddComponentMenu("VP/XBee Manager")]
@@ -26,11 +24,11 @@ public class XBeeManager : MonoBehaviour, IDeviceManager, IDevice
 
 	[Header("Device")]
 	public EDeviceType DeviceType       = EDeviceType.XBee3;
-
+/*
 	[Tooltip("XBee node discovery timeout in [s]")]
 	[Range(1, 255)]
 	public float       DiscoveryTimeout = 60;
-
+*/
 	[Header("Serial Connection")]
 	public string    COM_Port       = "COM1";
 	public int       Baudrate       = 115200;
@@ -111,7 +109,7 @@ public class XBeeManager : MonoBehaviour, IDeviceManager, IDevice
 			if (DeviceType == EDeviceType.XBee3)
 			{
 				// Open join window by writing NodeJoinTime (in s)
-				m_coordinator.SetParameter("NJ", new byte[] { (byte)(DiscoveryTimeout / 1.0f) });
+				//m_coordinator.SetParameter("NJ", new byte[] { (byte)(DiscoveryTimeout / 1.0f) });
 			}
 
 			m_network = m_coordinator.GetNetwork();
@@ -120,11 +118,9 @@ public class XBeeManager : MonoBehaviour, IDeviceManager, IDevice
 				m_network.DeviceDiscovered += OnDeviceDiscovered;
 				m_network.StartNodeDiscoveryProcess();
 
-				int discoveryTime = (int) DiscoveryTimeout;
-				while ((discoveryTime > 0) || m_network.IsDiscoveryRunning)
+				while (m_network.IsDiscoveryRunning)
 				{
 					yield return new WaitForSeconds(1);
-					discoveryTime--;
 				}
 
 				Debug.Log("XBee network discovery ended");
@@ -211,7 +207,7 @@ public class XBeeManager : MonoBehaviour, IDeviceManager, IDevice
 
 	public string GetDeviceName()
 	{
-		return $"XBee Coordinator";
+		return "XBee Coordinator";
 	}
 
 

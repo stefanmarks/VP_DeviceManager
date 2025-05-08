@@ -1003,7 +1003,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DeviceType: 2
-  DiscoveryTimeout: 60
   COM_Port: COM10
   Baudrate: 115200
   StopBits: 1
