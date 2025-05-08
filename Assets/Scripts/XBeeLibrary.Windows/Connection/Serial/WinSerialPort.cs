@@ -153,6 +153,11 @@ namespace XBeeLibrary.Windows.Connection.Serial
 			{
 				serialPort.DataReceived -= SerialPortDataReceived;
 				serialPort.Close();
+				if (pollThread != null)
+				{
+					pollThread.Join();
+					pollThread = null;
+				}
 			}
 		}
 
@@ -300,6 +305,7 @@ namespace XBeeLibrary.Windows.Connection.Serial
 
 		protected void Poll()
 		{
+			Debug.Log("Serial port polling started");
 			bool messagePrinted = false;
 			while ((serialPort != null) && serialPort.IsOpen)
 			{
@@ -316,11 +322,12 @@ namespace XBeeLibrary.Windows.Connection.Serial
 				{
 					if (!messagePrinted)
 					{
-						Debug.Log($"Serial port exception {e}");
+						Debug.LogWarning($"Serial port exception {e}");
 						messagePrinted = true;
 					}
 				}
 			}
+			Debug.Log("Serial port polling ended");
 		}
 	}
 }
