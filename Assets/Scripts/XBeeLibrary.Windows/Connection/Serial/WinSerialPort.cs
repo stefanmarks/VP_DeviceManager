@@ -18,6 +18,8 @@
 using System;
 using System.IO.Ports;
 using System.Threading;
+using UnityEngine;
+using UnityEngine.XR.OpenXR.Features;
 using XBeeLibrary.Core.Connection;
 
 namespace XBeeLibrary.Windows.Connection.Serial
@@ -298,6 +300,7 @@ namespace XBeeLibrary.Windows.Connection.Serial
 
 		protected void Poll()
 		{
+			bool messagePrinted = false;
 			while ((serialPort != null) && serialPort.IsOpen)
 			{
 				Thread.Sleep(1);
@@ -306,11 +309,16 @@ namespace XBeeLibrary.Windows.Connection.Serial
 					if ((serialPort != null) && serialPort.IsOpen && (serialPort.BytesToRead >= 1))
 					{
 						SerialPortDataReceived(this, null);
+						messagePrinted = false;
 					}
 				}
-				catch (System.IO.IOException)
+				catch (System.IO.IOException e)
 				{
-					// ignore
+					if (!messagePrinted)
+					{
+						Debug.Log($"Serial port exception {e}");
+						messagePrinted = true;
+					}
 				}
 			}
 		}
