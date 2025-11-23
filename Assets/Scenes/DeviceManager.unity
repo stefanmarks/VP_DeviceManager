@@ -985,7 +985,7 @@ MonoBehaviour:
   portIncoming: 57111
   portOutgoing: 57110
   startClientList:
-  - 10.10.1.110
+  - 10.10.1.100
   - 156.62.171.39
   - 127.0.0.1
   DistributeData: 0
@@ -1003,7 +1003,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DeviceType: 2
-  COM_Port: COM12
+  COM_Port: COM6
   Baudrate: 115200
   StopBits: 1
   Parity: 0
@@ -1482,7 +1482,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 26d36c45bf9b43a4fa08268150a1fc46, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  OSC_Prefix: /controllerL
+  OSC_Prefix: /controller1
   MinimumUpdateInterval: 1
   Input1:
     m_UseReference: 0
@@ -1601,7 +1601,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfcdb879d8850bf499c6a7aff57c5e22, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  OSC_Prefix: /controllerL
+  OSC_Prefix: /controller1
   MinimumUpdateInterval: 1
   TrackedObject: {fileID: 924950009}
 --- !u!114 &825937386
@@ -2644,7 +2644,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 5147d47a264f2ab4ea33842e4a0874b3, type: 2}
+  - {fileID: 2100000, guid: 4f397c5771e2ba34795781c9fc868dde, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -3027,7 +3027,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 26d36c45bf9b43a4fa08268150a1fc46, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  OSC_Prefix: /controllerR
+  OSC_Prefix: /controller2
   MinimumUpdateInterval: 1
   Input1:
     m_UseReference: 0
@@ -3146,7 +3146,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfcdb879d8850bf499c6a7aff57c5e22, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  OSC_Prefix: /controllerR
+  OSC_Prefix: /controller2
   MinimumUpdateInterval: 1
   TrackedObject: {fileID: 1983611830}
 --- !u!114 &2016596992
@@ -3310,7 +3310,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 26d36c45bf9b43a4fa08268150a1fc46, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  OSC_Prefix: /tracker1
+  OSC_Prefix: /head
   MinimumUpdateInterval: 1
   Input1:
     m_UseReference: 0
@@ -3429,7 +3429,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfcdb879d8850bf499c6a7aff57c5e22, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  OSC_Prefix: /tracker1
+  OSC_Prefix: /head
   MinimumUpdateInterval: 1
   TrackedObject: {fileID: 1625529273}
 --- !u!114 &2064899229
@@ -3639,7 +3639,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 26d36c45bf9b43a4fa08268150a1fc46, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  OSC_Prefix: /tracker2
+  OSC_Prefix: /torch
   MinimumUpdateInterval: 1
   Input1:
     m_UseReference: 0
@@ -3758,7 +3758,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfcdb879d8850bf499c6a7aff57c5e22, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  OSC_Prefix: /tracker2
+  OSC_Prefix: /torch
   MinimumUpdateInterval: 1
   TrackedObject: {fileID: 1096335403}
 --- !u!114 &2126350273
