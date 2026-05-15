@@ -23,7 +23,7 @@ public class XBeeManager : MonoBehaviour, IDeviceManager, IDevice
 	};
 
 	[Header("Device")]
-	public EDeviceType DeviceType       = EDeviceType.XBee3;
+	public EDeviceType DeviceType = EDeviceType.XBee3;
 /*
 	[Tooltip("XBee node discovery timeout in [s]")]
 	[Range(1, 255)]
@@ -45,6 +45,11 @@ public class XBeeManager : MonoBehaviour, IDeviceManager, IDevice
 	[Min(0)]
 	public float  MinimumUpdateInterval = 1.0f;
 
+	[Header("Timeout")]
+	[Tooltip("Time in [s] after which a device is considered offline and removed (0 = never)")]
+	[Min(0)]
+	public float  DeviceTimeout = 0;
+
 
 	public void Start()
 	{
@@ -63,7 +68,8 @@ public class XBeeManager : MonoBehaviour, IDeviceManager, IDevice
 
 		m_remoteDevices = new Dictionary<XBee64BitAddress, XBee>();
 		m_newDevices    = new List<XBee>();
-		m_nextIO_Update = 0;
+        m_staleDevices  = new List<XBee>();
+        m_nextIO_Update = 0;
 
 		StartCoroutine(OpenCoordinator());
 	}
@@ -191,8 +197,26 @@ public class XBeeManager : MonoBehaviour, IDeviceManager, IDevice
 			m_newDevices.Clear();
 		}
 
+		// check for and remove stale devices
+		if (DeviceTimeout > 0)
+		{
+			foreach (var kv in m_remoteDevices)
+			{
+				if (kv.Value.HasTimedOut(DeviceTimeout))
+				{
+					m_staleDevices.Add(kv.Value);
+				}
+			}
+			foreach (var device in m_staleDevices)
+			{
+                Debug.Log($"Removing device {device.GetDeviceName()}");
+                m_remoteDevices.Remove(device.GetDeviceAddress()); 
+			}
+			m_staleDevices.Clear();
+		}
+
 		// force send IO updates in intervals
-		m_nextIO_Update -= Time.unscaledDeltaTime;
+		m_nextIO_Update -= Time.deltaTime;
 		bool doUpdate = m_nextIO_Update <= 0;
 		if (doUpdate)
 		{
@@ -203,6 +227,7 @@ public class XBeeManager : MonoBehaviour, IDeviceManager, IDevice
 			m_nextIO_Update = MinimumUpdateInterval;
 		}
 	}
+
 
 
 	public string GetDeviceName()
@@ -233,9 +258,10 @@ public class XBeeManager : MonoBehaviour, IDeviceManager, IDevice
 	{
 		public XBee(XBeeManager manager, RemoteXBeeDevice device)
 		{
-			m_manager = manager;
-			m_device  = device;
-			m_oscVariables = new Dictionary<string, OSC_BoolVariable>();
+			m_manager        = manager;
+			m_device         = device;
+			m_oscVariables   = new Dictionary<string, OSC_BoolVariable>();
+			m_lastUpdateTime = Time.unscaledTime;
 		}
 
 
@@ -270,6 +296,8 @@ public class XBeeManager : MonoBehaviour, IDeviceManager, IDevice
 		public void ProcessIOSample(IOSample sample)
 		{
 			if ((m_device.NodeID == null) || (m_device.NodeID.Length == 0)) return;
+
+			m_lastUpdateTime = Time.unscaledTime;
 
 			string prefix = m_device.NodeID.ToLower().Replace(" ", "_");
 			foreach (var kv in sample.DigitalValues)
@@ -319,6 +347,18 @@ public class XBeeManager : MonoBehaviour, IDeviceManager, IDevice
 		}
 
 
+        public XBee64BitAddress GetDeviceAddress()
+        {
+            return m_device.XBee64BitAddr;
+        }
+
+
+        public bool HasTimedOut(float deviceTimeout)
+		{
+			return (deviceTimeout > 0) && (Time.unscaledTime - m_lastUpdateTime > deviceTimeout);
+        }
+
+
 		public void GetDeviceInformation(StringBuilder sb, string prefix)
 		{
 			foreach (var kv in m_oscVariables)
@@ -330,6 +370,7 @@ public class XBeeManager : MonoBehaviour, IDeviceManager, IDevice
 		protected XBeeManager                          m_manager;
 		protected RemoteXBeeDevice                     m_device;
 		protected Dictionary<string, OSC_BoolVariable> m_oscVariables;
+		protected float                                m_lastUpdateTime;
 	}
 
 
@@ -353,5 +394,5 @@ public class XBeeManager : MonoBehaviour, IDeviceManager, IDevice
 	protected double        m_nextIO_Update;
 
 	protected Dictionary<XBee64BitAddress, XBee> m_remoteDevices;
-	protected List<XBee>                         m_newDevices;
+	protected List<XBee>                         m_newDevices, m_staleDevices;
 }

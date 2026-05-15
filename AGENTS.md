@@ -38,7 +38,7 @@ Assets/
 
 ### Device Managers & Device Implementations
 
-- **`XBeeManager`** — Manages XBee radio modules over serial (COM port). Discovers remote XBee nodes, processes digital IO samples, exposes IO states as OSC bool variables. Supports XBee v1 (Raw802), v2/v3 (ZigBee).
+- **`XBeeManager`** — Manages XBee radio modules over serial (COM port). Discovers remote XBee nodes, processes digital IO samples, exposes IO states as OSC bool variables. Supports XBee v1 (Raw802), v2/v3 (ZigBee). Includes configurable stale device timeout (default 0 = never) that removes devices and their OSC variables after a period of inactivity.
 - **`OSCDeviceInformationProvider`** — Discovers `IOSCVariableContainer` components on the same GameObject and reports their OSC variables as device information.
 - **`HTCViveTrackerProfile`** — Custom OpenXR interaction profile implementing `XR_HTCX_vive_tracker_interaction`. Registers `HTCViveTrackerOpenXR` Input System device layout with 12 body role usages (left/right foot, shoulder, elbow, knee, waist, chest, camera, keyboard). Maps full set of inputs (pose, system/menu/grip/trigger/trackpad buttons, analog trigger/trackpad, haptic).
 - **`Tracked_OSC_Device`** — Monitors a Transform and sends position/rotation as a 6-DoF pose OSC variable.
@@ -54,6 +54,7 @@ Assets/
 - **Coroutine-based initialization**: `XBeeManager` uses coroutines (`OpenCoordinator`) for async serial port setup and network discovery.
 - **Auto-discovery**: `DebugInformation.GatherDeviceManagers()` uses `FindObjectsByType<MonoBehaviour>().OfType<IDeviceManager>()` at runtime.
 - **TypeConstraint attribute**: Used on `DebugInformation.Device` to constrain the inspector to `IDeviceManager` GameObjects.
+- **Stale device pruning**: `XBeeManager` tracks last IO sample time per device and removes devices (and their OSC variables) that exceed `DeviceTimeout`.
 
 ## Dependencies
 
@@ -77,3 +78,11 @@ Assets/
 - AddComponentMenu entries: `"VP/XBee Manager"`, `"VP/Tracked OSC Device"`, `"VP/InputAction OSC Device"`
 - OSC path structure: `{prefix}/{node_id}/{dio|input}{N}` for XBee, `{prefix}/pose` for trackers
 - Serial communication: configurable COM port, baud rate, stop bits, parity, handshake
+
+## Remaining Issues
+
+1. **HTCViveTrackerProfile_HTC.cs (entirely `#if false`)** — ~410 lines of disabled dead code. Should be deleted.
+2. **Commented-out debug code in XBeeManager.cs** — Several blocks of old debug logging remain commented out, adding noise.
+3. **InputAction_Device public bools** — `Input1On`–`Input4On` are serialized public fields but overwritten every frame in `Update()`, making inspector values misleading.
+4. **Unused using directive** — `System.Net` is imported in `XBeeManager.cs` but never used.
+5. **No tests** — Zero test infrastructure for a device bridging framework.
