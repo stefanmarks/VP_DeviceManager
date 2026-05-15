@@ -192,7 +192,7 @@ public class XBeeManager : MonoBehaviour, IDeviceManager, IDevice
 		}
 
 		// force send IO updates in intervals
-		m_nextIO_Update -= Time.deltaTime;
+		m_nextIO_Update -= Time.unscaledDeltaTime;
 		bool doUpdate = m_nextIO_Update <= 0;
 		if (doUpdate)
 		{
